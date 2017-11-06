@@ -9,6 +9,7 @@ const home = r => require.ensure([], () => r(require('@/page/home')), 'home');
 const addShop = r => require.ensure([], () => r(require('@/page/addShop')), 'addShop');
 const addGoods = r => require.ensure([], () => r(require('@/page/addGoods')), 'addGoods');
 const userList = r => require.ensure([], () => r(require('@/page/userList')), 'userList');
+const bookList = r => require.ensure([], () => r(require('@/page/bookList')), 'bookList');
 const shopList = r => require.ensure([], () => r(require('@/page/shopList')), 'shopList');
 const foodList = r => require.ensure([], () => r(require('@/page/foodList')), 'foodList');
 const orderList = r => require.ensure([], () => r(require('@/page/orderList')), 'orderList');
@@ -37,59 +38,59 @@ const routes = [
 		},{
 			path: '/addShop',
 			component: addShop,
-			meta: ['添加数据', '添加商铺'],
+			meta: ['书城配置', '书城列表'],
 		},{
 			path: '/addGoods',
 			component: addGoods,
-			meta: ['添加数据', '添加商品'],
+			meta: ['书城配置', '书卡列表'],
 		},{
-			path: '/userList',
-			component: userList,
-			meta: ['数据管理', '用户列表'],
+            path: '/navButton',
+            component: addGoods,
+            meta: ['书城配置', '导航按钮'],
+        },{
+			path: '/bookList',
+			component: bookList,
+			meta: ['物料配置', '图书列表'],
 		},{
 			path: '/shopList',
 			component: shopList,
-			meta: ['数据管理', '商家列表'],
+			meta: ['物料配置', '书单列表'],
 		},{
 			path: '/foodList',
 			component: foodList,
-			meta: ['数据管理', '食品列表'],
+			meta: ['物料配置', '卡片类型'],
 		},{
 			path: '/orderList',
 			component: orderList,
-			meta: ['数据管理', '订单列表'],
+			meta: ['物料配置', '列表管理'],
 		},{
 			path: '/adminList',
 			component: adminList,
-			meta: ['数据管理', '管理员列表'],
+			meta: ['物料配置', '跳转样式管理'],
 		},{
 			path: '/visitor',
 			component: visitor,
-			meta: ['图表', '用户分布'],
+			meta: ['图书榜单界面', '排行榜列表'],
 		},{
 			path: '/newMember',
 			component: newMember,
-			meta: ['图表', '用户数据'],
+			meta: ['图书榜单界面', '分类列表'],
 		},{
 			path: '/uploadImg',
 			component: uploadImg,
-			meta: ['文本编辑', 'MarkDown'],
+			meta: ['对话小说榜单配置', '对话小说列表'],
 		},{
+            path: '/uploadImg',
+            component: uploadImg,
+            meta: ['对话小说榜单配置', '分类列表'],
+        },{
+            path: '/uploadImg',
+            component: uploadImg,
+            meta: ['对话小说榜单配置', '列表管理'],
+        },{
 			path: '/vueEdit',
 			component: vueEdit,
-			meta: ['编辑', '文本编辑'],
-		},{
-			path: '/adminSet',
-			component: adminSet,
-			meta: ['设置', '管理员设置'],
-		},{
-			path: '/sendMessage',
-			component: sendMessage,
-			meta: ['设置', '发送通知'],
-		},{
-			path: '/explain',
-			component: explain,
-			meta: ['说明', '说明'],
+			meta: ['运营活动配置', '应用内推送'],
 		}]
 	}
 ]
