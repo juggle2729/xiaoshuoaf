@@ -1,38 +1,29 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import {getAdminInfo} from '@/api/getData'
+// import pkg from 'package'
+import * as actions from './actions'
+import * as getters from './getters'
+import app from './modules/app'
+import menu from './modules/menu'
+import auth from './modules/auth'
+import dataConfig from './modules/data-config'
 
 Vue.use(Vuex)
 
-const state = {
-	adminInfo: {
-		avatar: 'default.jpg'
-	},
-}
+const store = new Vuex.Store({
+  strict: process.env.NODE_ENV !== 'development',
+  actions,
+  getters,
+  modules: {
+    app,
+    menu,
+    auth,
+    dataConfig
+  },
+  state: {
 
-const mutations = {
-	saveAdminInfo(state, adminInfo){
-		state.adminInfo = adminInfo;
-	}
-}
-
-const actions = {
-	async getAdminData({commit}){
-		try{
-			const res = await getAdminInfo()
-			if (res.status == 1) {
-				commit('saveAdminInfo', res.data);
-			}else{
-				throw new Error(res)
-			}
-		}catch(err){
-			console.log('您尚未登陆或者session失效')
-		}
-	}
-}
-
-export default new Vuex.Store({
-	state,
-	actions,
-	mutations,
+  },
+  mutations: {}
 })
+
+export default store

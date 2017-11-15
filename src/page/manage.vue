@@ -14,7 +14,7 @@
 					</el-submenu>
 					<el-submenu index="3">
 						<template slot="title"><i class="el-icon-plus"></i>书城配置</template>
-                        <el-menu-item index="addShop">书城列表</el-menu-item>
+                        <el-menu-item index="bookStoreList" @click="winReload">书城列表</el-menu-item>
 						<el-menu-item index="addShop">书卡列表</el-menu-item>
 						<el-menu-item index="addGoods">导航按钮</el-menu-item>
 					</el-submenu>
@@ -49,9 +49,14 @@
     export default {
 		computed: {
 			defaultActive: function(){
-				return this.$route.path.replace('/', '');
+//				return this.$route.path.replace('/', '');
 			}
 		},
+        methods: {
+		    winReload: function() {
+
+            }
+        }
     }
 </script>
 

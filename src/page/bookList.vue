@@ -51,7 +51,8 @@
 
 <script>
     import headTop from '../components/headTop'
-    import {baseUrl, baseImgPath} from '@/config/env'
+    import {getAuthHeaders} from '../router'
+//    import {baseUrl, baseImgPath} from '@/config/env'
     export default {
         data() {
             return {

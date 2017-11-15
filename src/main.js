@@ -1,18 +1,44 @@
 import Vue from 'vue'
-import App from './App'
+import Resource from 'vue-resource'
+// import NProgress from 'vue-nprogress'
+// import { sync } from 'vuex-router-sync'
+import App from './App.vue'
 import router from './router'
-import store from './store/'
+import store from './store'
+// import * as filters from './filters'
+// import { TOGGLE_SIDEBAR } from 'vuex-store/mutation-types'
+// import VuePaginate from 'vue-paginate'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-default/index.css'
 
-Vue.config.productionTip = false;
+// Vue.use(VuePaginate)
+Vue.use(ElementUI)
+Vue.use(Resource)
+Vue.http.options.root = 'http://192.168.0.72:8022/api'
 
-Vue.use(ElementUI);
+const options = {
+    latencyThreshold: 200, // Number of ms before progressbar starts showing, default: 100,
+    router: true, // Show progressbar when navigating routes, default: true
+    // TODO: bug here, when progressbar turn on http, cause one error, see https://github.com/rstacruz/nprogress/pull/129
+    http: false // Show progressbar when doing Vue.http, default: true
+}
 
-new Vue({
-	el: '#app',
-	router,
-	store,
-	template: '<App/>',
-	components: { App }
+
+// sync(store, router)
+
+
+
+const { state } = store
+
+
+// Object.keys(filters).forEach(key => {
+//     Vue.filter(key, filters[key])
+// })
+
+const app = new Vue({
+    router,
+    store,
+    ...App
 })
+
+export { app, router, store }
