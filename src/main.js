@@ -14,7 +14,7 @@ import 'element-ui/lib/theme-default/index.css'
 // Vue.use(VuePaginate)
 Vue.use(ElementUI)
 Vue.use(Resource)
-Vue.http.options.root = 'http://192.168.0.72:8022/api'
+Vue.http.options.root = 'http://192.168.0.72:8022'
 
 const options = {
     latencyThreshold: 200, // Number of ms before progressbar starts showing, default: 100,

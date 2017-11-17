@@ -7,10 +7,12 @@ const state = {
     getModulelist:{
         list:[],
         PageCount:'',
-        RecordCount:''
+        RecordCount:'',
+        sessionKey:''
     },
     getModule: {
-      list:""
+      list:"",
+        sessionKey:''
     },
     getModuleTypeList: {
         list:''
@@ -25,14 +27,30 @@ const state = {
         list:''
     },
     getBookList: {
-        list:'',
-        PageCount:'',
-        RecordCount:''
+        list: '',
+        PageCount: '',
+        RecordCount: ''
     },
     getTrankingTypeList: {
         list:'',
         PageCount:'',
         RecordCount:''
+    },
+    getShortBookList: {
+        list:'',
+        PageCount:'',
+        RecordCount:''
+    },
+    getBookThemeList: {
+        list:'',
+        PageCount:'',
+        RecordCount:''
+    },
+    delete: {
+        status:''
+    },
+    addModule: {
+        status:''
     }
 }
 // actions
@@ -92,6 +110,36 @@ const actions = {
             (data) => commit(types.Get_Tranking_Type_List_SUCCESS, data)
         )
     },
+    getShortBookList ({commit},params) {
+        commit(types.Get_Short_Book_List_REQUEST)
+        dataConfig.getShortBookListAPI(params.page,
+            (data) => commit(types.Get_Short_Book_List_SUCCESS, data)
+        )
+    },
+    getShortBookListSearch ({commit},params) {
+        commit(types.Get_Short_Book_List_Search_REQUEST)
+        dataConfig.getShortBookListSearchAPI(params.page,params.params,
+            (data) => commit(types.Get_Short_Book_List_Search_SUCCESS, data)
+        )
+    },
+    getBookThemeList ({commit},params) {
+        commit(types.Get_Book_Theme_List_REQUEST)
+        dataConfig.getBookThemeListAPI(params.page,
+            (data) => commit(types.Get_Book_Theme_List_SUCCESS, data)
+        )
+    },
+    delete ({commit},params) {
+        commit(types.Delete_REQUEST)
+        dataConfig.deleteAPI(params.payload,
+            (data) => commit(types.Delete_SUCCESS, data)
+        )
+    },
+    addModule ({commit},params) {
+        commit(types.Add_Module_REQUEST)
+        dataConfig.addModuleAPI(params.data,
+            (data) => commit(types.Add_Module_SUCCESS, data)
+        )
+    },
 }
 
 // mutations
@@ -103,12 +151,14 @@ const mutations = {
       state.getModulelist.list = data.dt.PageData
       state.getModulelist.PageCount = data.dt.PageCount
       state.getModulelist.RecordCount = data.dt.RecordCount
+      state.getModulelist.sessionKey = data.st
   },
     [types.Get_Module_REQUEST] (state) {
 
     },
     [types.Get_Module_SUCCESS] (state, data) {
         state.getModule.list = data.dt
+        state.getModule.sessionKey = data.st
     },
     [types.Get_Module_Type_List_REQUEST] (state) {
 
@@ -139,6 +189,8 @@ const mutations = {
     },
     [types.Get_Book_List_SUCCESS] (state, data) {
         state.getBookList.list = data.dt.PageData
+        state.getBookList.PageCount = data.dt.PageCount
+        state.getBookList.RecordCount = data.dt.RecordCount
     },
     [types.Get_Book_List_Search_REQUEST] (state) {
 
@@ -155,6 +207,34 @@ const mutations = {
         state.getTrankingTypeList.list = data.dt.PageData
         state.getTrankingTypeList.PageCount = data.dt.PageCount
         state.getTrankingTypeList.RecordCount = data.dt.RecordCount
+    },
+    [types.Get_Short_Book_List_REQUEST] (state) {
+
+    },
+    [types.Get_Short_Book_List_SUCCESS] (state, data) {
+        state.getShortBookList.list = data.dt.PageData
+        state.getShortBookList.PageCount = data.dt.PageCount
+        state.getShortBookList.RecordCount = data.dt.RecordCount
+    },
+    [types.Get_Book_Theme_List_REQUEST] (state) {
+
+    },
+    [types.Get_Book_Theme_List_SUCCESS] (state, data) {
+        state.getBookThemeList.list = data.dt.PageData
+        state.getBookThemeList.PageCount = data.dt.PageCount
+        state.getBookThemeList.RecordCount = data.dt.RecordCount
+    },
+    [types.Delete_REQUEST] (state) {
+
+    },
+    [types.Delete_SUCCESS] (state, data) {
+        state.delete.status = data.st
+    },
+    [types.Add_Module_REQUEST] (state) {
+
+    },
+    [types.Add_Module_SUCCESS] (state, data) {
+        state.addModule.status = data.st
     },
 }
 

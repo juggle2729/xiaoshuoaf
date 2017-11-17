@@ -54,7 +54,7 @@
 		},
         methods: {
 		    winReload: function() {
-
+                this.$router.replace({ path: '/bookStoreList'})
             }
         }
     }
