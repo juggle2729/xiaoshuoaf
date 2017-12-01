@@ -25,6 +25,8 @@
 					</el-submenu>
 					<el-submenu index="5">
 						<template slot="title"><i class="el-icon-edit"></i>对话小说榜单配置</template>
+                        <el-menu-item index="pointInterest" @click="pointInterest">点趣列表</el-menu-item>
+                        <el-menu-item index="pointInterestIndex" @click="pointInterestIndex">点趣首页配置</el-menu-item>
 						<el-menu-item index="uploadImg">对话小说列表</el-menu-item>
 						<el-menu-item index="vueEdit">分类列表</el-menu-item>
                         <el-menu-item index="vueEdit">列表管理</el-menu-item>
@@ -55,7 +57,13 @@
         methods: {
 		    winReload: function() {
                 this.$router.replace({ path: '/bookStoreList'})
-            }
+            },
+            pointInterest: function() {
+                this.$router.replace({ path: '/pointInterest'})
+            },
+            pointInterestIndex: function() {
+                this.$router.replace({ path: '/pointInterestIndex'})
+            },
         }
     }
 </script>

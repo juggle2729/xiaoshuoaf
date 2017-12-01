@@ -14,22 +14,22 @@
             </template>
         </el-table-column>
         <el-table-column
-            prop="ModuleType"
-            label="ModuleType"
+            prop="ModuleTyp"
+            label="模块类别"
             width="150">
         </el-table-column>
         <el-table-column
             prop="ModuleDescription"
-            label="ModuleDescription"
+            label="模块详细描述"
             width="180">
         </el-table-column>
         <el-table-column
             prop="StoreVersionName"
-            label="StoreVersionName">
+            label="模块配置归属名称">
         </el-table-column>
         <el-table-column
             prop="Title"
-            label="Title">
+            label="模块标题">
         </el-table-column>
                 <el-table-column label="操作">
                     <template slot-scope="scope">
@@ -113,67 +113,47 @@
                         </el-form-item>
                     </el-form>
                 </div>
-               <div class="detail">
-                   <el-table
-                       border
-                       style="width: 100%">
-                       <el-table-column
-                           label="日期"
-                           width="180">
-                       </el-table-column>
-                       <el-table-column
-                           label="姓名"
-                           width="180">
-                       </el-table-column>
-                       <el-table-column
-                           label="地址">
-                       </el-table-column>
-                   </el-table>
-                   <el-form ref="form"  label-width="180px">
-                       <el-form-item label="详细内容图片地址" >
-                           <el-input v-model="IconUrl"></el-input>
-                       </el-form-item>
-                       <el-form-item label="详细内容名称" >
-                           <el-input v-model="Name"></el-input>
-                       </el-form-item>
-                       <el-form-item label="详细内容描述" >
-                           <el-input v-model="Summary"></el-input>
-                       </el-form-item>
-                       <el-form-item label="详细内容作者" >
-                           <el-input v-model="Author"></el-input>
-                       </el-form-item>
-                       <el-form-item label="详细内容标签" >
-                           <el-input v-model="Tag"></el-input>
-                       </el-form-item>
-                       <el-form-item label="详细内容类别" >
-                           <el-input v-model="Category"></el-input>
-                       </el-form-item>
-                       <el-form-item label="详细内容点击操作码">
-                           <el-select  v-model="ClickType" placeholder="请选择脚标点击操作码" >
-                               <el-option    v-for="item in ModuleClickTypeList" :key="item.Id" :label="item.Name" :value="item.ClickType"></el-option>
-                           </el-select>
-                       </el-form-item>
-                       <el-form-item label="点击详细内容待跳转书籍ID" >
-                           <el-input v-model="BookId"></el-input>
-                       </el-form-item>
-                       <el-form-item label="点击详细内容跳转业务主键ID" >
-                           <el-input v-model="OperationId"></el-input>
-                       </el-form-item>
-                       <el-form-item label="点击详细内容跳转的网页" >
-                           <el-input v-model="WebViewUrl"></el-input>
-                       </el-form-item>
-                       <el-form-item label="详细内容排序" >
-                           <el-input v-model="SerialNumber"></el-input>
-                       </el-form-item>
-                       <el-form-item label="点击详细内容待跳转的段子" >
-                           <el-input v-model="ShortBookId"></el-input>
-                       </el-form-item>
-                       <el-form-item label="详细内容支持的最小版本显示" >
-                           <el-input v-model="MinVer"></el-input>
-                       </el-form-item>
-
-                   </el-form>
-                   <el-button type="primary" @click="onSubmit">保存</el-button>
+               <div class="detail" style="width: 100%;overflow-x: scroll">
+                   <div>
+                       <el-button style="float: right" @click="addtr">新增</el-button>
+                   </div>
+                   <table width="100%" border="0" cellspacing="0" cellpadding="0" contenteditable="true" id="mytable">
+                       <thead>
+                       <tr style="height: 40px">
+                           <th>图片</th>
+                           <th>描述</th>
+                           <th>作者</th>
+                           <th>标签</th>
+                           <th>类别</th>
+                           <th>点击操作编码</th>
+                           <th>待跳转的书ID</th>
+                           <th>主业务ID</th>
+                           <th>跳转网页</th>
+                           <th>排序</th>
+                           <th>待跳转的段子</th>
+                           <th>最小版本</th>
+                           <th>操作</th>
+                       </tr>
+                       </thead>
+                       <tbody id="tableBody">
+                            <tr >
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td><el-button  type="button" @click="deleteTr($event)">删除</el-button></td>
+                            </tr>
+                       </tbody>
+                   </table>
+                       <el-button type="primary" @click="onSubmit">保存</el-button>
                    <el-button @click="back">取消</el-button>
                </div>
             </div>
@@ -219,7 +199,7 @@
                 WebViewUrl: '',
                 SerialNumber: '',
                 ShortBookId: '',
-                MinVer: ''
+                MinVer: '',
             }
         },
         components: {
@@ -262,6 +242,31 @@
                 this.showModuleAdd = true
             },
             onSubmit() {
+                var mytable = document.getElementById("mytable");
+                console.log(mytable.rows.length)
+                var tableData = [];
+                for(var i=1,rows=mytable.rows.length; i<rows; i++){
+                    for(var j=0,cells=mytable.rows[i].cells.length; j<cells; j++){
+                        if(!tableData[i]){
+                            tableData[i] = {};
+                        }
+                        tableData[i]= {
+                            "IconUrl":mytable.rows[i].cells[0].innerHTML,
+                            "Name":mytable.rows[i].cells[1].innerHTML,
+                            "Summary":mytable.rows[i].cells[2].innerHTML,
+                            "Author":mytable.rows[i].cells[3].innerHTML,
+                            "Tag":mytable.rows[i].cells[4].innerHTML,
+                            "Category":mytable.rows[i].cells[5].innerHTML,
+                            "ClickType":mytable.rows[i].cells[6].innerHTML,
+                            "BookId":mytable.rows[i].cells[7].innerHTML,
+                            "OperationId":mytable.rows[i].cells[8].innerHTML,
+                            "ClickWebViewUrl":mytable.rows[i].cells[8].innerHTML,
+                            "SerialNumber":mytable.rows[i].cells[9].innerHTML,
+                            "ShortBookId":mytable.rows[i].cells[10].innerHTML,
+                             "MinVer":mytable.rows[i].cells[11].innerHTML
+                        }
+                    }
+                }
                 var data  = {
                     ModuleType: Number(this.ModuleType),
                     Notice:this.Notice,
@@ -276,23 +281,10 @@
                     ImageToClickWebViewUrl: this.ImageToClickWebViewUrl,
                     ImageToBookId: this.ImageToBookId,
                     ImageOperationId: this. ImageOperationId,
-                    detial:[{
-                        IconUrl: this.IconUrl,
-                        Name: this.Name,
-                        Summary: this.Summary,
-                        Author: this.Author,
-                        Tag: this.Tag,
-                        Category:this.Category,
-                        ClickType: this.ClickType,
-                        BookId: this.BookId,
-                        OperationId: this. OperationId,
-                        WebViewUrl: this.WebViewUrl,
-                        SerialNumber: this.SerialNumber,
-                        ShortBookId: this.ShortBookId,
-                        MinVer: this.MinVer
-                    }]
+                    detial:tableData.slice(1)
                 }
-                this.$store.dispatch('addModule', {data:data}).then(
+                var payload = JSON.stringify(data)
+                this.$store.dispatch('addModule', {data:payload}).then(
                     (response) => {
                     }
                 ).catch(
@@ -322,6 +314,18 @@
                     });
                 });
 
+            },
+            addtr() {
+                var tbody = document.querySelector("#tableBody")
+                var str = "<tr >"+
+                    "</td>"+"<td>"+"</td>"+"<td>"+"</td>"+"<td>"+"</td>"+"<td>"+"</td>"+"<td>"+"</td>"+"<td>"+"</td>"+"<td>"+"</td>"+"<td>"+"</td>"+"<td>"+"</td>"+"<td>"+"</td>"+"<td>"+"</td>"+"<td>"+"</td>"+
+                "<td>"+"<button  @click='deleteTr($event)'>删除</button>"+"</td>"+"</tr>"
+                var tr = document.createElement("tr")
+                tr.innerHTML = str
+                tbody.appendChild(tr)
+            },
+            deleteTr(e) {
+                e.currentTarget.parentNode.parentNode.remove()
             }
         },
         computed: {
@@ -361,7 +365,7 @@
         padding: 20px;
         .buttonAdd{
             margin-bottom: 10px;
-            overflow:hidden ;
+
 
         }
     }
@@ -415,6 +419,23 @@
                     margin-right: 60px;
                 }
             }
+        }
+        table{
+            border-right:1px solid #F00;
+            border-bottom:1px solid #F00;
+            box-sizing: border-box;
+        }
+        table td{
+            border-left: 1px solid #F00;
+            border-top: 1px solid #F00;
+        }
+        table tr{
+            text-align: center;
+            height: 30px;
+        }
+        th{
+            border-left: 1px solid #F00;
+            border-top: 1px solid #F00;
         }
     }
 </style>

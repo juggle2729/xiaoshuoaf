@@ -4,13 +4,13 @@
         <div class="table_container">
             <el-form ref="form" :model="form" label-width="120px" :label-position="labelPosition" style="padding-left:20px">
                 <el-form-item label="主题">
-                    <el-input v-model="list.Title" style="width:200px" ref="title"></el-input>
+                    <el-input v-model="list.Title" style="width:200px" ref="Title"></el-input>
                 </el-form-item>
                 <el-form-item label="通知">
-                    <el-input v-model="list.Notice" style="width:200px" ref="notice"></el-input>
+                    <el-input v-model="list.Notice" style="width:200px" ref="Notice"></el-input>
                 </el-form-item>
                 <el-form-item label="模块类型">
-                    <el-select v-model="list.ModuleDescription" placeholder="请选择模块类型" ref="module_type">
+                    <el-select v-model="list.ModuleDescription" placeholder="请选择模块类型" ref="ModuleType" >
                         <el-option  v-for="item in ModuleTypeList" :key="item.Id" :label="item.ModuleDescription" :value="item.ModuleType"></el-option>
                     </el-select>
                 </el-form-item>
@@ -26,18 +26,18 @@
                 <el-form-item label="尾标" >
                     <div style="width: 60%;height:300px;border: 1px solid #e0e0e0;padding-top: 20px;padding-left: 20px">
                         <el-form-item label="内容名称">
-                            <el-input v-model="list.FootName" style="width:200px" ref="foot_name"></el-input>
+                            <el-input v-model="list.FootName" style="width:200px" ref="FootName"></el-input>
                         </el-form-item>
                         <el-form-item label="点击跳转业务ID">
                             <el-input v-model="list.FootOperationId" style="width:200px" ref="FootOperationId"></el-input>
                         </el-form-item>
                         <el-form-item label="点击类型名称">
-                            <el-select v-model="list.FootClickTypeName" placeholder="请选择点击内容点击类型名称" ref="name_click_type" @change="changeFootClickType">
+                            <el-select v-model="list.FootClickTypeName" placeholder="请选择点击内容点击类型名称" ref="NameClickType" @change="changeFootClickType">
                                 <el-option  v-for="item in  ModuleClickTypeList" :key="item.Id" :label="item.Name" :value="item.ClickType"></el-option>
                             </el-select>
                         </el-form-item>
                         <el-form-item label="点击跳转到网页" v-show="showFootToClickWebViewUrl">
-                            <el-input v-model="list.FootToClickWebViewUrl" style="width:200px" ref="web_view" :data-operationId="list.FootOperationId"></el-input>
+                            <el-input v-model="list.FootToClickWebViewUrl" style="width:200px" ref="WebView" :data-operationId="list.FootOperationId"></el-input>
                         </el-form-item>
                         <el-form-item label="FootId" style="display:none">
                             <el-select v-model="list.FoodId" placeholder="请选择FoodId">
@@ -56,25 +56,27 @@
                             </el-select>
                         </el-form-item>
                         <el-form-item label="图片" >
-                            <img :src="list.ImageUrl" alt="" ref="image_url">
+                            <img :src="list.ImageUrl" alt="" ref="ImageUrl">
                         </el-form-item>
                         <el-form-item label="点击图片类型" >
-                            <el-select v-model="list.ImageClickTypeName" placeholder="请选择点击图片类型" ref="image_click_type" @change="changeImageClickType">
+                            <el-select v-model="list.ImageClickTypeName" placeholder="请选择点击图片类型" ref="ImageClickType" @change="changeImageClickType">
                                 <el-option  v-for="item in  ModuleClickTypeList" :key="item.Id" :label="item.Name" :value="item.ClickType"></el-option>
                             </el-select>
                         </el-form-item>
                         <el-form-item label="点击跳转网页" v-if="showWebView">
-                            <el-input v-model="list.ImageToClickWebViewUrl" style="width:200px" ref="image_web_view"></el-input>
+                            <el-input v-model="list.ImageToClickWebViewUrl" style="width:200px" ref="ImageWebView"></el-input>
                         </el-form-item>
                         <el-form-item label="跳转业务ID" >
-                            <el-input v-model="list.ImageOperationId" style="width:200px" ref="image_to_operationId"></el-input>
+                            <el-input v-model="list.ImageOperationId" style="width:200px" ref="ImageToOperationId"></el-input>
                         </el-form-item>
                         <el-form-item label="跳转书籍ID" >
-                            <el-input v-model="ImageToBookId" style="width:200px" ref="image_to_bookId"></el-input>
+                            <el-input v-model="ImageToBookId" style="width:200px" ref="ImageToBookId"></el-input>
                         </el-form-item>
                     </div>
                 </el-form-item>
-                <div style="padding-bottom: 10px">内容列表</div>
+                <div style="padding-bottom: 10px">
+                    内容列表
+                </div>
                 <div class="moduleDetail">
                     <el-table
                         :data="tableData"
@@ -90,16 +92,28 @@
                         </el-table-column>
                         <el-table-column
                             label="图标"
-                            width="120">
-                            <template scope=" scope">
-                                <img :src="scope.row.IconUrl" alt="" id="iconUrl">
+                            width="200">
+                            <template slot-scope=" scope">
+                                <img :src="scope.row.IconUrl" alt="" class="iconUrl" ref="imgDetail">
+                                <from>
+                                    <el-upload
+                                        class="upload-demo"
+                                        :action="uploadUrl"
+                                        :on-preview="handlePreview"
+                                        :on-remove="handleRemove"
+                                        :on-success="handleSuccess"
+                                        :file-list="fileList"
+                                        style="margin-top: 10px;float: right">
+                                        <el-button size="small" type="primary" @click="changeImg(scope.$index,scope.row)">点击上传</el-button>
+                                    </el-upload>
+                                </from>
                             </template>
                         </el-table-column>
                         <el-table-column
                             label="描述"
-                            width="180">
+                            width="160">
                             <template scope=" scope">
-                                <el-input v-model="scope.row.Summary" style="width:100%" ref="moduleDetailSummary"></el-input>
+                                <el-input v-model="scope.row.Summary" style="width:100%" ref="moduleDetailSummary" :title=scope.row.Summary></el-input>
                             </template>
                         </el-table-column>
                         <el-table-column
@@ -124,33 +138,32 @@
                             </template>
                         </el-table-column>
                         <el-table-column
-                            prop="ClickTypeName"
                             label="点击类型"
                             width="210">
                             <template slot-scope=" scope">
-                                <el-select  v-model="scope.row.ClickTypeName" placeholder="请选择模块类型" ref="clickType" @change="changeClickType(scope.$index, scope.row,$event)">
+                                <el-select  v-model="scope.row.ClickTypeName" placeholder="请选择模块类型" ref="clickType" @change="changeClickType(scope.$index, scope.row)">
                                     <el-option    v-for="item in ModuleClickTypeList" :key="item.Id" :label="item.Name" :value="item.ClickType"></el-option>
                                 </el-select>
                             </template>
                         </el-table-column>
                         <el-table-column
-                            label="图书名称"
-                            width="100">
-                            <template scope=" scope">
-                                <el-input v-model="scope.row.BookName" style="width:100%" ref="moduleDetailBookName"></el-input>
+                            label="图书名称">
+                            <template slot-scope=" scope">
+                                <el-input v-model="scope.row.BookName" style="width:100%" ref="moduleDetailBookName" :title=scope.row.BookName></el-input>
                             </template>
                         </el-table-column>
                         <el-table-column
                             label="段子名称"
                             width="100" >
                             <template scope=" scope">
-                                <el-input v-model="scope.row.ShortBookName" style="width:100%" ref="moduleDetailShortBookName"></el-input>
+                                <el-input v-model="scope.row.ShortBookName" style="width:100%" ref="moduleDetailShortBookName" :title=scope.row.ShortBookName ></el-input>
                             </template>
                         </el-table-column>
                         <el-table-column
-                            label="点击跳转网页">
+                            label="点击跳转网页"
+                            align>
                             <template scope=" scope">
-                                <el-input v-model="scope.row.ClickWebViewUrl" style="width:200px" ref="ClickWebViewUrl"></el-input>
+                                <el-input v-model="scope.row.ClickWebViewUrl" style="width:200px" ref="ClickWebViewUrl" :title=scope.row.ClickWebViewUrl></el-input>
                             </template>
                         </el-table-column>
                         <el-table-column
@@ -186,7 +199,8 @@
                     <el-table
                         :data="bookList"
                         border highlight-current-row
-                        style="width: 100%">
+                        style="width: 100%"
+                        @row-dblclick='handleRowHandle'>
                         <el-table-column
                             label="Id"
                             width="80">
@@ -195,8 +209,7 @@
                             </template>
                         </el-table-column>
                         <el-table-column
-                            label="书名"
-                            width="100">
+                            label="书名">
                             <template scope=" scope">
                                 <p style="width: 100%;height: 100%" @dblclick="selectId(scope.row.Id,scope.row.Name)">{{scope.row.Name}}</p>
                             </template>
@@ -219,7 +232,7 @@
                             label="描述"
                             width="180">
                             <template scope=" scope">
-                                <p style="width: 100%;height: 100%" @dblclick="selectId(scope.row.Id,scope.row.Name)">{{scope.row.Summary}}</p>
+                                <p style="width: 100%;height: 100%" :title=scope.row.Summary  @dblclick="selectId(scope.row.Id,scope.row.Name)">{{scope.row.Summary}}</p>
                             </template>
                         </el-table-column>
                         <el-table-column
@@ -273,7 +286,7 @@
                 </div>
                 <div class="block booklistpag">
                     <el-pagination
-                        @current-change="handleCurrentChange"
+                        @current-change="handleCurrentChangeBookList"
                         layout="total, prev, pager, next"
                         :total="BookLostRecordCount">
                     </el-pagination>
@@ -322,20 +335,20 @@
                             label="是否完结">
                         </el-table-column>
                     </el-table>
-                </div>
-                <div class="block booklistpag">
-                    <el-pagination
-                        @current-change="handleCurrentChange"
-                        layout="total, prev, pager, next"
-                        :total="TrankingRecordCount">
-                    </el-pagination>
+                    <div class="block booklistpag">
+                        <el-pagination
+                            @current-change="handleCurrentChangeTranking"
+                            layout="total, prev, pager, next"
+                            :total="TrankingRecordCount">
+                        </el-pagination>
+                    </div>
                 </div>
             </div>
             <div class="shortbooklist" v-if="showShortBookList">
                 <div>段子详细列表</div>
                 <el-input @keyup.enter.native="getShortBookListSearch" style="width: 200px;" class="filter-item" placeholder="名字或者作者" v-model="shortNameOrAuthor">
                 </el-input>
-                <el-input @keyup.enter.native="getShortBookListSearch" style="width: 200px;" class="filter-item" placeholder="状态" v-model="shortIsOnshelf" >
+                <el-input @keyup.enter.native="getShortBookListSearch" style="width: 200px;" class="filter-item" placeholder="状态" v-model="shortIsOnshelf">
                 </el-input>
                 <el-button class="filter-item" type="primary" v-waves icon="search" @click="getShortBookListSearch">搜索</el-button>
                 <i @click="goBackshort" class="el-icon-error goback"></i>
@@ -343,7 +356,8 @@
                     <el-table
                         :data="shortBookList"
                         border
-                        style="width: 100%">
+                        style="width:100%"
+                        @row-dblclick='handleRowHandleShort'>
                         <el-table-column
                             prop="Id"
                             label="Id"
@@ -352,7 +366,7 @@
                         <el-table-column
                             prop="Name"
                             label="书名"
-                            width="100">
+                            width="200">
                         </el-table-column>
                         <el-table-column
                             prop="Author"
@@ -365,15 +379,16 @@
                             width="100">
                         </el-table-column>
                         <el-table-column
-                            prop="Summary"
-                            label="描述"
-                            width="180">
+                            label="描述">
+                            <template scope=" scope">
+                                <p style="width: 100%;height: 100%" :title=scope.row.Summary>{{scope.row.Summary}}</p>
+                            </template>
                         </el-table-column>
                         <el-table-column
                             label="图片"
-                            width="150">
+                            width="200">
                             <template scope=" scope">
-                                <img :src="scope.row.FrontImageFilename" alt="">
+                                <img :src="scope.row.FrontImageFilename" style="width: 60px;height:80px;margin:10px auto" alt="">
                             </template>
                         </el-table-column>
                         <el-table-column
@@ -384,7 +399,7 @@
                         <el-table-column
                             prop="Status"
                             label="状态"
-                            width="80">
+                            width="120">
                         </el-table-column>
                         <el-table-column
                             prop="BookTypeName"
@@ -395,7 +410,7 @@
                 </div>
                 <div class="block booklistpag">
                     <el-pagination
-                        @current-change="handleCurrentChange"
+                        @current-change="handleCurrentChangeShort"
                         layout="total, prev, pager, next"
                         :total="ShortBookListRecordCount">
                     </el-pagination>
@@ -423,13 +438,13 @@
                         <el-table-column
                             label="头像">
                             <template scope=" scope">
-                                <img :src="scope.row.IconUrl" alt="" >
+                                <img :src="scope.row.IconUrl" style="width: 70px;height: 100px;margin: 5px auto" alt="" >
                             </template>
                         </el-table-column>
                         <el-table-column
                             label="图标">
                             <template scope=" scope">
-                                <img :src="scope.row.ImageUrl" alt="" >
+                                <img :src="scope.row.ImageUrl" style="width: 70px;height: 100px;margin: 5px auto" alt="" >
                             </template>
                         </el-table-column>
                         <el-table-column
@@ -461,7 +476,7 @@
                 </div>
                 <div class="block booklistpag">
                     <el-pagination
-                        @current-change="handleCurrentChange"
+                        @current-change="handleCurrentChangeBookThemeList"
                         layout="total, prev, pager, next"
                         :total="BookThemeListRecordCount">
                     </el-pagination>
@@ -473,7 +488,6 @@
 
 <script>
     import headTop from '../../components/headTop'
-    import {getAuthHeaders} from '../../router'
     export default {
         beforeMount() {
             this.$store.dispatch('getModule', {payload:{sessionKey:localStorage.SessionKey,id:this.$route.params.Id}}).then(
@@ -516,7 +530,7 @@
                 nameOrAuthor:'',
                 isOnshelf: 1,
                 shortNameOrAuthor: '',
-                shortIsOnshelf: '',
+                shortIsOnshelf: 1,
                 showFootToClickWebViewUrl: false,
                 showBookList:false,
                 showTrankingTypeList:false,
@@ -529,36 +543,41 @@
                 form: {
                     name: ''
                 },
-
+                fileList: [],
+                url:'',
+                imgIndex:'',
+                rowIndex:'',
+                uploadUrl: 'http://192.168.0.72:8022/api/commons/common/upload?sessionKey='+localStorage.SessionKey,
+                headers: {
+                    'Access-Control-Allow-Origin': '*'
+                }
             }
         },
         created() {
-
         },
         methods: {
             onSubmit() {
-                var data = {
+                var payload = {
                     Id: this.$route.params.Id,
-                    ModuleType: this.$refs.module_type.value,
-                    Notice: this.$refs.notice.value,
-                    Title: this.$refs.title.value,
+                    ModuleType: this.list.ModuleType,
+                    Notice: this.$refs.Notice.value,
+                    Title: this.$refs.Title.value,
                     IsHasFoot:this.list.IsHasFoot,
                     SerialNumber:this.$refs.SerialNumber.value,
                     StoreVersion: this.$refs.StoreVersionName.value,
-                    FootName:this.$refs.foot_name.value,
-                    FootClickType:this.$refs.name_click_type.value,
+                    FootName:this.$refs.FootName.value,
+                    FootClickType:this.list.FootClickType,
                     FootOperationId: this.$refs.FootOperationId.value,
-                    FootToClickWebViewUrl: this.$refs.web_view.value,
-                    ImageUrl: this.$refs.image_url.src,
-                    ImageClickType: this.$refs.image_click_type.value,
-                    ImageToClickWebViewUrl: this.$refs.image_web_view.value,
-                    ImageToBookId: this.$refs.image_to_bookId.value,
-                    ImageOperationId: this.$refs.image_to_operationId.value,
-                    detail:[
-                        {}
-                    ]
+                    FootToClickWebViewUrl: this.$refs.WebView.value,
+                    ImageUrl: this.$refs.ImageUrl.src,
+                    ImageClickType: this.list.ImageClickType,
+                    ImageToClickWebViewUrl: this.$refs.ImageWebView.value,
+                    ImageToBookId: this.$refs.ImageToBookId.value,
+                    ImageOperationId: this.$refs.ImageToOperationId.value,
+                    detail: this.tableData
                 }
-                this.$store.dispatch('upDate', {data:data}).then(
+                var data = JSON.stringify(payload)
+                this.$store.dispatch('upDate', data).then(
                     (response) => {
 
                     }
@@ -601,7 +620,17 @@
 
                 )
             },
-            handleCurrentChange(val) {
+            handleCurrentChangeTranking(val) {
+                this.$store.dispatch('getTrankingTypeList', {
+                    page:{"PageIndex":val,"PageSize":"10"}
+                    }).then(
+                    (response) => {
+                    }
+                    ).catch(
+
+                    )
+            },
+            handleCurrentChangeBookList(val) {
                 var data = {
                     nameOrAuthor: this.nameOrAuthor,
                     isOnshelf: this.isOnshelf
@@ -641,6 +670,16 @@
 
                 )
             },
+            handleCurrentChangeShort(val) {
+                this.$store.dispatch('getShortBookList', {
+                    page:{"PageIndex":val,"PageSize":"10"}
+                }).then(
+                    (response) => {
+                    }
+                ).catch(
+
+                )
+            },
             getBookThemeList() {
                 this.$store.dispatch('getBookThemeList', {
                     page:{"PageIndex":"1","PageSize":"10"}
@@ -651,9 +690,19 @@
 
                 )
             },
+            handleCurrentChangeBookThemeList(val) {
+                this.$store.dispatch('getBookThemeList', {
+                    page:{"PageIndex":val,"PageSize":"10"}
+                }).then(
+                    (response) => {
+                    }
+                ).catch(
+
+                )
+            },
             changeFootClickType() {
-                var value = this.$refs.name_click_type.value
-                if(value === "跳转到webview" || value === 21 ){
+                var value = this.$refs.NameClickType.value
+                if(value === "跳转到WebView" || value === 21 ){
                     this.showFootToClickWebViewUrl = true
                 } else{
                     this.showFootToClickWebViewUrl = false
@@ -661,7 +710,7 @@
             },
             changeImageClickType() {
                 this.flagDetail = false
-                var value = this.$refs.image_click_type.value
+                var value = this.$refs.ImageClickType.value
                 if(value === 22) {
                     this.getBookList()
                     this.flagImg = true
@@ -680,15 +729,13 @@
                     this.showBookThemeList = true
                 }
             },
-            changeClickType(index,row,event) {
-                console.log(event)
-                console.log(index,row)
+            changeClickType(index,row) {
                 this.flagImg = false
+                this.flagDetail = true
                 this.indexActive = index
                 if(row.ClickTypeName === 22) {
-                    this.getBookList()
-                    this.flagDetail = true
                     this.showBookList = true
+                    this.getBookList()
                 }
                 if(row.ClickTypeName === 23) {
                     this.getTrankingTypeList()
@@ -712,6 +759,9 @@
             goBackBookThemeList() {
                 this.showBookThemeList = false
             },
+            goBackshort() {
+                this.showShortBookList = false
+            },
             selectId(id,name) {
                 this.showBookList = false
                 if (this.flagImg) {
@@ -719,12 +769,49 @@
                 }
                 if (this.flagDetail) {
                     this.moduleDetailBookName = name
-                    console.log(this.$refs.moduleDetailBookName)
+                    this.$nextTick(function () {
+                        this.tableData[this.indexActive].BookName =name
+                    })
+
 
                 }
             },
+            handleRowHandle(row,event) {
+
+            },
+            handleRowHandleShort(row,event) {
+                this.showShortBookList = false
+                if (this.flagDetail) {
+                    this.tableData[this.indexActive].ShortBookName =row.Name
+                }
+            },
+            handleRemove(file, fileList) {
+                console.log(fileList)
+                console.log(file)
+            },
+            changeImg(index,row) {
+                this.imgIndex = index;
+                this.rowIndex = row;
+                let lists = document.querySelectorAll(".el-upload-list")
+                for (let list of lists) {
+                    list.style.display = "none"
+                }
+            },
+            hideList() {
+
+            },
+            handlePreview(file) {
+                console.log(file);
+            },
+            handleSuccess(response,file,fileList) {
+                console.log(response)
+                this.tableData[this.imgIndex].IconUrl = response.dt[0].FileUrl
+            }
         },
         computed: {
+            sessionKey: function() {
+                return  this.$store.state.dataConfig.getModulelist.sessionKey
+            },
             list: function() {
                 return  this.$store.state.dataConfig.getModule.list
             },
@@ -795,6 +882,12 @@
                 ).catch(
 
                 )
+            },
+            sessionKey: function(val,odlVal) {
+                if (val === 2) {
+                    alert("session过期")
+                    this.$router.push(this.$route.query.redirect || '/')
+                }
             }
 
         }
@@ -808,10 +901,11 @@
     .el-form-item__content{
         margin-bottom: 20px;
     }
-    #iconUrl{
+    .iconUrl{
         display: block;
         width: 80px;
         height: 40px;
+        float: left;
     }
     .submitButton{
         margin-top: 30px;
@@ -832,12 +926,25 @@
             margin-left: 20px;
         }
     }
+    .shortbooklist{
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,.7);
+        overflow: auto;
+        z-index: 111111;
+        .filter-item{
+            margin-left: 20px;
+        }
+    }
     .trankingtypelist .table_container{
         width: 70%;
         margin: 0 auto;
     }
     .booklistpag{
-        margin-left: 20px;
+        margin: 10px 0px;
     }
     .el-table__row .el-input input {
         border: none;
@@ -851,21 +958,47 @@
         margin: 0 auto;
         margin-top: 15px;
     }
+    .moduleDetai .el-table .cell{
+        padding: 0;
+        box-sizing: content-box;
+    }
     .booklist .el-table__body-wrapper .cell{
         height: 100px;
         line-height: 100px;
+        padding: 0;
+        box-sizing: content-box;
+        p{
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            text-align: center;
+        }
     }
     .trankingtypelist .el-table__body-wrapper .cell{
         height: 40px;
     }
     .shortbooklist .el-table__body-wrapper .cell{
         height: 100px;
+        line-height: 100px;
+        text-align: center;
+        p{
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
     }
     .bookthemelist .el-table__body-wrapper .cell{
-        height: 40px;
+        height: 110px;
+        line-height: 110px;
+        text-align: center;
     }
     .moduleDetail{
         overflow-x: scroll;
+    }
+    .el-input input{
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis
     }
     .goback{
         float: right;

@@ -43,7 +43,7 @@ export default {
             })
     },
    upDateAPI (payload, cb, errorCb) {
-        return Vue.http.post('api/bookstores/bookstore/update/?sessionKey='+localStorage.SessionKey,payload)
+        return Vue.http.post('api/bookstores/bookstore/update/?sessionKey='+localStorage.SessionKey,JSON.stringify(payload))
             .then((response) => {
                 cb(response.data)
             }, (error) => {

@@ -88,7 +88,7 @@ const actions = {
     },
    upDate ({commit},params) {
         commit(types.Up_Date_REQUEST)
-        dataConfig.upDateAPI(params.data,
+        dataConfig.upDateAPI(params,
             (data) => commit(types.Up_Date_SUCCESS, data)
         )
     },
@@ -212,6 +212,14 @@ const mutations = {
 
     },
     [types.Get_Short_Book_List_SUCCESS] (state, data) {
+        state.getShortBookList.list = data.dt.PageData
+        state.getShortBookList.PageCount = data.dt.PageCount
+        state.getShortBookList.RecordCount = data.dt.RecordCount
+    },
+    [types.Get_Short_Book_List_Search_REQUEST] (state) {
+
+    },
+    [types.Get_Short_Book_List_Search_SUCCESS] (state, data) {
         state.getShortBookList.list = data.dt.PageData
         state.getShortBookList.PageCount = data.dt.PageCount
         state.getShortBookList.RecordCount = data.dt.RecordCount

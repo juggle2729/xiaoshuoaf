@@ -38,6 +38,9 @@ const bookList = r => require.ensure([], () => r(require('@/page/bookList')), 'b
 const bookStoreList = r => require.ensure([], () => r(require('@/page/bookStore/bookStoreList')), 'bookListStore');
 const getModule = r => require.ensure([], () => r(require('@/page/bookStore/getModule')), 'getModule');
 
+const pointInterest = r => require.ensure([], () => r(require('@/page/dialogicNovels/pointInterest')), 'pointInterest');
+const pointInterestIndex = r => require.ensure([], () => r(require('@/page/dialogicNovels/pointInterestIndex')), 'pointInterestIndex');
+
 const routes = [
 	{
 		path: '/',
@@ -63,6 +66,16 @@ const routes = [
                 path: '/bookStoreList/getModule/:Id',
                 component: getModule,
                 meta: ['书城配置', '书城列表','模块属性'],
+            },
+            {
+                path: '/pointInterest',
+                component: pointInterest,
+                meta: ['对话小说榜单配置', '点趣分类列表'],
+            },
+            {
+                path: '/pointInterestIndex',
+                component: pointInterestIndex,
+                meta: ['点趣首页配置'],
             }
 		]
 	}
