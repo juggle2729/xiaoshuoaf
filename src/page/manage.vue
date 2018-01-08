@@ -6,7 +6,8 @@
 					<el-menu-item index="manage"><i class="el-icon-menu"></i>导航菜单</el-menu-item>
 					<el-submenu index="2">
 						<template slot="title"><i class="el-icon-document"></i>物料配置</template>
-						<el-menu-item index="bookList">图书列表</el-menu-item>
+						<el-menu-item index="bookList" @click="bookList">图书列表</el-menu-item>
+                        <el-menu-item index="bookranking" @click="bookranking">排行榜</el-menu-item>
 						<el-menu-item index="shopList">书单列表</el-menu-item>
 						<el-menu-item index="foodList">卡片类型</el-menu-item>
 						<el-menu-item index="orderList">列表管理</el-menu-item>
@@ -20,14 +21,14 @@
 					</el-submenu>
 					<el-submenu index="4">
 						<template slot="title"><i class="el-icon-star-on"></i>图书榜单界面</template>
-						<el-menu-item index="visitor">排行榜列表</el-menu-item>
+                        <el-menu-item index="bookranking" @click="bookranking">排行榜</el-menu-item>
 						<el-menu-item index="newMember">分类列表</el-menu-item>
 					</el-submenu>
 					<el-submenu index="5">
 						<template slot="title"><i class="el-icon-edit"></i>对话小说榜单配置</template>
                         <el-menu-item index="pointInterest" @click="pointInterest">点趣列表</el-menu-item>
                         <el-menu-item index="pointInterestIndex" @click="pointInterestIndex">点趣首页配置</el-menu-item>
-						<el-menu-item index="uploadImg">对话小说列表</el-menu-item>
+                        <el-menu-item index="dialogNovel" @click="dialogNovel">对话小说列表</el-menu-item>
 						<el-menu-item index="vueEdit">分类列表</el-menu-item>
                         <el-menu-item index="vueEdit">列表管理</el-menu-item>
 					</el-submenu>
@@ -64,6 +65,15 @@
             pointInterestIndex: function() {
                 this.$router.replace({ path: '/pointInterestIndex'})
             },
+            dialogNovel: function() {
+                this.$router.replace({ path: '/dialogNovel'})
+            },
+            bookList: function() {
+                this.$router.replace({ path: '/bookList'})
+            },
+            bookranking: function() {
+                this.$router.replace({ path: '/bookranking'})
+            }
         }
     }
 </script>

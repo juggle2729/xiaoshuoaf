@@ -3,7 +3,7 @@
 	  	<transition name="form-fade" mode="in-out">
 	  		<section class="form_contianer" v-show="showLogin">
 		  		<div class="manage_tip">
-		  			<p>小说后台管理系统</p>
+		  			<p>付费小说后台管理系统</p>
 		  		</div>
 		    	<el-form>
 					<el-form-item prop="username">

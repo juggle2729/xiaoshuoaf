@@ -9,6 +9,8 @@ const banuserall = state => state.dataConfig.ban_user_all
 const componententry = state => {
   return state.menu.items.filter(c => c.name === 'Components')[0]
 }
+const getModule = state => state.dataConfig.getModule
+const getModuleDetailList = state => state.dataConfig.getModuleDetailList
 export {
   pkg,
   app,
@@ -17,6 +19,6 @@ export {
   effect,
   menuitems,
   componententry,
-  banuser,
-  banuserall
+    getModule,
+    getModuleDetailList
 }

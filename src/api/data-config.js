@@ -1,8 +1,8 @@
 import Vue from 'vue'
 
 export default {
-    getModulelistAPI (payload, cb, errorCb) {
-        return Vue.http.get('api/bookstores/bookstore/getModulelist/'+payload.page.PageIndex+'/'+payload.page.PageSize+'/?sessionKey='+localStorage.SessionKey)
+    getModulelistAPI (page,params, cb, errorCb) {
+        return Vue.http.get('api/bookstores/bookstore/getModulelist/'+page.PageIndex+'/'+page.PageSize+'/?sessionKey='+localStorage.SessionKey,{params:params})
             .then((response) => {
                 cb(response.data)
             }, (error) => {
@@ -13,24 +13,24 @@ export default {
         return Vue.http.get('api/bookstores/bookstore/getModule', {params:payload})
             .then((response) => {
                 cb(response.data)
+                console.log(response.data)
             }, (error) => {
 
             })
     },
-    getModuleTypeListAPI (payload, cb, errorCb) {
-        return Vue.http.get('api/bookstores/bookstore/getModuleTypelist/'+payload.page.PageIndex+'/'+payload.page.PageSize+'/?sessionKey='+localStorage.SessionKey)
+    getModuleTypeListAPI (page,params, cb) {
+        return Vue.http.get('api/bookstores/bookstore/getModuleTypelist/'+page.PageIndex+'/'+page.PageSize+'/?sessionKey='+localStorage.SessionKey,{parmas:params})
             .then((response) => {
                 cb(response.data)
             }, (error) => {
-                errorCb(error)
             })
     },
-    getModuleClickTypeListAPI (payload, cb, errorCb) {
-        return Vue.http.get('api/bookstores/bookstore/getModuleClickTypelist/'+payload.page.PageIndex+'/'+payload.page.PageSize+'/?sessionKey='+localStorage.SessionKey)
+    getModuleClickTypeListAPI (page,params, cb) {
+        return Vue.http.get('api/bookstores/bookstore/getModuleClickTypelist/'+page.PageIndex+'/'+page.PageSize+'/?sessionKey='+localStorage.SessionKey,{params:params})
             .then((response) => {
                 cb(response.data)
             }, (error) => {
-                errorCb(error)
+
             })
     },
     getModuleDetailListAPI (page, params,cb) {
@@ -43,15 +43,15 @@ export default {
             })
     },
    upDateAPI (payload, cb, errorCb) {
-        return Vue.http.post('api/bookstores/bookstore/update/?sessionKey='+localStorage.SessionKey,JSON.stringify(payload))
+        return Vue.http.post('api/bookstores/bookstore/update/?sessionKey='+localStorage.SessionKey+'&'+'isPay='+1,JSON.stringify(payload.data),payload.headers)
             .then((response) => {
                 cb(response.data)
+                console.log(payload)
             }, (error) => {
-                errorCb(error)
             })
     },
-    getBookListAPI (page,cb) {
-        return Vue.http.get('api/books/book/getbooklist/'+page.PageIndex+'/'+page.PageSize+'/?sessionKey='+localStorage.SessionKey)
+    getBookListAPI (page,params,cb) {
+        return Vue.http.get('api/books/book/getbooklist/'+page.PageIndex+'/'+page.PageSize+'/?sessionKey='+localStorage.SessionKey,{params:params})
             .then((response) => {
                 cb(response.data)
             }, (error) => {
@@ -66,8 +66,16 @@ export default {
 
             })
     },
-    getTrankingTypeListAPI (page,cb) {
-        return Vue.http.get('api/bookstores/bookstore/getrankingtypelist/'+page.PageIndex+'/'+page.PageSize+'/?sessionKey='+localStorage.SessionKey)
+    getBookListSearchIdAPI (page, params, cb) {
+        return Vue.http.get('api/books/book/getbook/?sessionKey='+localStorage.SessionKey,{params:params})
+            .then((response) => {
+                cb(response.data)
+            }, (error) => {
+
+            })
+    },
+    getTrankingTypeListAPI (page,params,cb) {
+        return Vue.http.get('api/bookstores/bookstore/getrankingtypelist/'+page.PageIndex+'/'+page.PageSize+'/?sessionKey='+localStorage.SessionKey,{params:params})
             .then((response) => {
                 cb(response.data)
             }, (error) => {
@@ -90,8 +98,8 @@ export default {
 
             })
     },
-    getBookThemeListAPI (page,cb) {
-        return Vue.http.get('api/bookstores/bookstore/getbookthemelist/'+page.PageIndex+'/'+page.PageSize+'/?sessionKey='+localStorage.SessionKey)
+    getBookThemeListAPI (page,params,cb) {
+        return Vue.http.get('api/bookstores/bookstore/getbookthemelist/'+page.PageIndex+'/'+page.PageSize+'/?sessionKey='+localStorage.SessionKey,{params:params})
             .then((response) => {
                 cb(response.data)
             }, (error) => {
@@ -108,11 +116,36 @@ export default {
             })
     },
     addModuleAPI (payload, cb, errorCb) {
-        return Vue.http.post('api/bookstores/bookstore/add/?sessionKey='+localStorage.SessionKey,JSON.stringify(payload))
+        return Vue.http.post('api/bookstores/bookstore/add/?sessionKey='+localStorage.SessionKey+'&'+'isPay='+1,JSON.stringify(payload.data),payload.headers)
             .then((response) => {
                 cb(response.data)
             }, (error) => {
                 errorCb(error)
+            })
+    },
+    upDateBookAPI (payload, cb, errorCb) {
+        return Vue.http.post('api/books/book/update/?sessionKey='+localStorage.SessionKey+'&'+'isPay='+1,JSON.stringify(payload.data),payload.headers)
+            .then((response) => {
+                cb(response.data)
+                console.log(payload)
+            }, (error) => {
+            })
+    },
+    deleteBookAPI (payload, cb, errorCb) {
+        return Vue.http.delete('api/books/book/delete/',{params:payload})
+            .then((response) => {
+                cb(response.data)
+            }, (error) => {
+                errorCb(error)
+            })
+    },
+    getBookRankingAPI (page,params,cb, errorCb) {
+        return Vue.http.get('api/materiels/book/getbookranking/'+page.PageIndex+'/'+page.PageSize, {params:params})
+            .then((response) => {
+                cb(response.data)
+                console.log(response.data)
+            }, (error) => {
+
             })
     },
 }

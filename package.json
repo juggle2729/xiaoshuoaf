@@ -2,7 +2,7 @@
   "name": "vue2-manage",
   "version": "1.0.1",
   "description": "vue2-manage",
-  "author": "cangdu <1264889788@qq.com>",
+  "author": "dqj <m13825187757@163.com>",
   "license": "GPL",
   "private": true,
   "scripts": {
@@ -26,7 +26,8 @@
     "vue-resource": "^1.3.4",
     "vue-router": "^2.3.1",
     "vue-simplemde": "^0.3.8",
-    "vuex": "^2.3.1"
+    "vuex": "^2.3.1",
+    "xlsx": "^0.11.12"
   },
   "devDependencies": {
     "autoprefixer": "^6.7.2",

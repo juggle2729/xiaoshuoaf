@@ -2,7 +2,7 @@
     <div class="fillcontain">
         <head-top></head-top>
         <div class="table_container">
-            <el-form ref="form" :model="form" label-width="120px" :label-position="labelPosition" style="padding-left:20px">
+            <el-form ref="form" :model="list" label-width="120px" :label-position="labelPosition" style="padding-left:20px">
                 <el-form-item label="主题">
                     <el-input v-model="list.Title" style="width:200px" ref="Title"></el-input>
                 </el-form-item>
@@ -18,14 +18,35 @@
                     <el-input v-model="list.SerialNumber" style="width:200px" ref="SerialNumber"></el-input>
                 </el-form-item>
                 <el-form-item label="配置归属">
-                    <el-select  v-model="list.StoreVersionName" placeholder="请选择配置归属" ref="StoreVersionName">
+                    <el-select  v-model="StoreVersionName" :placeholder=list.StoreVersionName ref="StoreVersionName">
                         <el-option label="书城" value="1"></el-option>
                         <el-option label="发现" value="2"></el-option>
                     </el-select>
                 </el-form-item>
+                <!--<el-form-item label="开始时间" >-->
+                    <!--<el-input v-model="list.BeginDate" style="width:200px"></el-input>-->
+                <!--</el-form-item>-->
+                <!--<el-form-item label="结束时间" >-->
+                    <!--<el-input v-model="list.EndDate" style="width:200px"></el-input>-->
+                <!--</el-form-item>-->
+                <el-form-item label="起止时间">
+                    <el-date-picker
+                        v-model="date"
+                        type="datetimerange"
+                        range-separator="至"
+                        start-placeholder="开始日期"
+                        end-placeholder="结束日期">
+                    </el-date-picker>
+                </el-form-item>
+                <el-form-item label="是否预览" >
+                    <el-select  v-model="list.IsPreview" ref="IsPreview">
+                        <el-option label="true" value="true"></el-option>
+                        <el-option label="false" value="false"></el-option>
+                    </el-select>
+                </el-form-item>
                 <el-form-item label="尾标" >
                     <div style="width: 60%;height:300px;border: 1px solid #e0e0e0;padding-top: 20px;padding-left: 20px">
-                        <el-form-item label="内容名称">
+                        <el-form-item label="脚标名称">
                             <el-input v-model="list.FootName" style="width:200px" ref="FootName"></el-input>
                         </el-form-item>
                         <el-form-item label="点击跳转业务ID">
@@ -70,7 +91,7 @@
                             <el-input v-model="list.ImageOperationId" style="width:200px" ref="ImageToOperationId"></el-input>
                         </el-form-item>
                         <el-form-item label="跳转书籍ID" >
-                            <el-input v-model="ImageToBookId" style="width:200px" ref="ImageToBookId"></el-input>
+                            <el-input v-model="list.ImageToBookId" style="width:200px" ref="ImageToBookId"></el-input>
                         </el-form-item>
                     </div>
                 </el-form-item>
@@ -79,7 +100,7 @@
                 </div>
                 <div class="moduleDetail">
                     <el-table
-                        :data="tableData"
+                        :data="getModuleDetailListTableData"
                         border
                         highlight-current-row
                         max-width="100%">
@@ -91,7 +112,7 @@
                             </template>
                         </el-table-column>
                         <el-table-column
-                            label="图标"
+                            label="封面"
                             width="200">
                             <template slot-scope=" scope">
                                 <img :src="scope.row.IconUrl" alt="" class="iconUrl" ref="imgDetail">
@@ -153,13 +174,6 @@
                             </template>
                         </el-table-column>
                         <el-table-column
-                            label="段子名称"
-                            width="100" >
-                            <template scope=" scope">
-                                <el-input v-model="scope.row.ShortBookName" style="width:100%" ref="moduleDetailShortBookName" :title=scope.row.ShortBookName ></el-input>
-                            </template>
-                        </el-table-column>
-                        <el-table-column
                             label="点击跳转网页"
                             align>
                             <template scope=" scope">
@@ -187,111 +201,132 @@
                     <el-button>取消</el-button>
                 </div>
             </el-form>
-            <div class="booklist" v-if="showBookList">
-                <div>图书详情</div>
-                <el-input @keyup.enter.native="getBookListSearch" style="width: 200px;" class="filter-item" placeholder="名字或者作者" v-model="nameOrAuthor">
-                </el-input>
-                <el-input @keyup.enter.native="getBookListSearch" style="width: 200px;" class="filter-item" placeholder="状态" v-model="isOnshelf" >
-                </el-input>
-                <el-button class="filter-item" type="primary" v-waves icon="search" @click="getBookListSearch">搜索</el-button>
-                <i @click="goBack" class="el-icon-error goback"></i>
-                <div class="table_container">
-                    <el-table
-                        :data="bookList"
-                        border highlight-current-row
-                        style="width: 100%"
-                        @row-dblclick='handleRowHandle'>
-                        <el-table-column
-                            label="Id"
-                            width="80">
-                            <template scope=" scope">
-                                <p style="width: 100%;height: 100%" @dblclick="selectId(scope.row.Id,scope.row.Name)">{{scope.row.Id}}</p>
-                            </template>
-                        </el-table-column>
-                        <el-table-column
-                            label="书名">
-                            <template scope=" scope">
-                                <p style="width: 100%;height: 100%" @dblclick="selectId(scope.row.Id,scope.row.Name)">{{scope.row.Name}}</p>
-                            </template>
-                        </el-table-column>
-                        <el-table-column
-                            label="作者"
-                            width="100">
-                            <template scope=" scope">
-                                <p style="width: 100%;height: 100%" @dblclick="selectId(scope.row.Id,scope.row.Name)">{{scope.row.Author}}</p>
-                            </template>
-                        </el-table-column>
-                        <el-table-column
-                            label="标签"
-                            width="100">
-                            <template scope=" scope">
-                                <p style="width: 100%;height: 100%" @dblclick="selectId(scope.row.Id,scope.row.Name)">{{scope.row.Tag}}</p>
-                            </template>
-                        </el-table-column>
-                        <el-table-column
-                            label="描述"
-                            width="180">
-                            <template scope=" scope">
-                                <p style="width: 100%;height: 100%" :title=scope.row.Summary  @dblclick="selectId(scope.row.Id,scope.row.Name)">{{scope.row.Summary}}</p>
-                            </template>
-                        </el-table-column>
-                        <el-table-column
-                            label="图片"
-                            width="150">
-                            <template scope=" scope">
-                                <img :src="scope.row.FrontImageFilename" alt="" id="FrontImageFilename" @dblclick="selectId(scope.row.Id,scope.row.Name)">
-                            </template>
-                        </el-table-column>
-                        <el-table-column
-                            label="体积"
-                            width="100">
-                            <template scope=" scope">
-                                <p style="width: 100%;height: 100%" @dblclick="selectId(scope.row.Id,scope.row.Name)">{{scope.row.VolumeCount}}</p>
-                            </template>
-                        </el-table-column>
-                        <el-table-column
-                            label="图书类型"
-                            width="100">
-                            <template scope=" scope">
-                                <p style="width: 100%;height: 100%" @dblclick="selectId(scope.row.Id,scope.row.Name)">{{scope.row.BookType}}</p>
-                            </template>
-                        </el-table-column>
-                        <el-table-column
-                            label="状态"
-                            width="100">
-                            <template scope=" scope">
-                                <p style="width: 100%;height: 100%" @dblclick="selectId(scope.row.Id,scope.row.Name)">{{scope.row.Status}}</p>
-                            </template>
-                        </el-table-column>
-                        <el-table-column
-                            label="起始时间">
-                            <template scope=" scope">
-                                <p style="width: 100%;height: 100%" @dblclick="selectId(scope.row.Id,scope.row.Name)">{{scope.row.Created}}</p>
-                            </template>
-                        </el-table-column>
-                        <el-table-column
-                            label="更新时间">
-                            <template scope=" scope">
-                                <p style="width: 100%;height: 100%" @dblclick="selectId(scope.row.Id,scope.row.Name)">{{scope.row.Updated}}</p>
-                            </template>
-                        </el-table-column>
-                        <el-table-column
-                            label="书名起源"
-                            width="180">
-                            <template scope=" scope">
-                                <p style="width: 100%;height: 100%" @dblclick="selectId(scope.row.Id,scope.row.Name)">{{scope.row.BookSourceName}}</p>
-                            </template>
-                        </el-table-column>
-                    </el-table>
-                </div>
-                <div class="block booklistpag">
-                    <el-pagination
-                        @current-change="handleCurrentChangeBookList"
-                        layout="total, prev, pager, next"
-                        :total="BookLostRecordCount">
-                    </el-pagination>
-                </div>
-            </div>
+            <!--<div class="booklist" v-if="showBookList">-->
+                <!--<div>图书详情</div>-->
+                <!--<el-input @keyup.enter.native="getBookListSearch" style="width: 200px;" class="filter-item" placeholder="名字或者作者" v-model="nameOrAuthor">-->
+                <!--</el-input>-->
+                <!--<el-input @keyup.enter.native="getBookListSearch" style="width: 200px;" class="filter-item" placeholder="状态" v-model="isOnshelf" >-->
+                <!--</el-input>-->
+                <!--<el-button class="filter-item" type="primary" v-waves icon="search" @click="getBookListSearch">搜索</el-button>-->
+                <!--<i @click="goBack" class="el-icon-error goback"></i>-->
+                <!--<div class="table_container">-->
+                    <!--<el-table-->
+                        <!--:data="bookList"-->
+                        <!--border highlight-current-row-->
+                        <!--style="width: 100%"-->
+                        <!--@row-dblclick='handleRowHandle'>-->
+                        <!--<el-table-column-->
+                            <!--label="Id"-->
+                            <!--width="80">-->
+                            <!--<template scope=" scope">-->
+                                <!--<p style="width: 100%;height: 100%" @dblclick="selectId(scope.row.Id,scope.row.Name)">{{scope.row.Id}}</p>-->
+                            <!--</template>-->
+                        <!--</el-table-column>-->
+                        <!--<el-table-column-->
+                            <!--label="书名">-->
+                            <!--<template scope=" scope">-->
+                                <!--<p style="width: 100%;height: 100%" @dblclick="selectId(scope.row.Id,scope.row.Name)">{{scope.row.Name}}</p>-->
+                            <!--</template>-->
+                        <!--</el-table-column>-->
+                        <!--<el-table-column-->
+                            <!--label="作者"-->
+                            <!--width="100">-->
+                            <!--<template scope=" scope">-->
+                                <!--<p style="width: 100%;height: 100%" @dblclick="selectId(scope.row.Id,scope.row.Name)">{{scope.row.Author}}</p>-->
+                            <!--</template>-->
+                        <!--</el-table-column>-->
+                        <!--<el-table-column-->
+                            <!--label="标签"-->
+                            <!--width="100">-->
+                            <!--<template scope=" scope">-->
+                                <!--<p style="width: 100%;height: 100%" @dblclick="selectId(scope.row.Id,scope.row.Name)">{{scope.row.Tag}}</p>-->
+                            <!--</template>-->
+                        <!--</el-table-column>-->
+                        <!--<el-table-column-->
+                            <!--label="描述"-->
+                            <!--width="180">-->
+                            <!--<template scope=" scope">-->
+                                <!--<p style="width: 100%;height: 100%" :title=scope.row.Summary  @dblclick="selectId(scope.row.Id,scope.row.Name)">{{scope.row.Summary}}</p>-->
+                            <!--</template>-->
+                        <!--</el-table-column>-->
+                        <!--<el-table-column-->
+                            <!--label="图片"-->
+                            <!--width="150">-->
+                            <!--<template scope=" scope">-->
+                                <!--<img :src="scope.row.FrontImageFilename" alt="" id="FrontImageFilename" @dblclick="selectId(scope.row.Id,scope.row.Name)">-->
+                            <!--</template>-->
+                        <!--</el-table-column>-->
+                        <!--<el-table-column-->
+                            <!--label="体积"-->
+                            <!--width="100">-->
+                            <!--<template scope=" scope">-->
+                                <!--<p style="width: 100%;height: 100%" @dblclick="selectId(scope.row.Id,scope.row.Name)">{{scope.row.VolumeCount}}</p>-->
+                            <!--</template>-->
+                        <!--</el-table-column>-->
+                        <!--<el-table-column-->
+                            <!--label="图书类型"-->
+                            <!--width="100">-->
+                            <!--<template scope=" scope">-->
+                                <!--<p style="width: 100%;height: 100%" @dblclick="selectId(scope.row.Id,scope.row.Name)">{{scope.row.BookType}}</p>-->
+                            <!--</template>-->
+                        <!--</el-table-column>-->
+                        <!--<el-table-column-->
+                            <!--label="章节价格"-->
+                            <!--width="100">-->
+                            <!--<template scope=" scope">-->
+                                <!--<p style="width: 100%;height: 100%" @dblclick="selectId(scope.row.Id,scope.row.Name)">{{scope.row.UnitPrice}}</p>-->
+                            <!--</template>-->
+                        <!--</el-table-column>-->
+                        <!--<el-table-column-->
+                            <!--label="VIP价格"-->
+                            <!--width="100">-->
+                            <!--<template scope=" scope">-->
+                                <!--<p style="width: 100%;height: 100%" @dblclick="selectId(scope.row.Id,scope.row.Name)">{{scope.row.VipPrice}}</p>-->
+                            <!--</template>-->
+                        <!--</el-table-column>-->
+                        <!--<el-table-column-->
+                            <!--label="支付类型"-->
+                            <!--width="100">-->
+                            <!--<template scope=" scope">-->
+                                <!--<p style="width: 100%;height: 100%" @dblclick="selectId(scope.row.Id,scope.row.Name)">{{scope.row.PayType}}</p>-->
+                            <!--</template>-->
+                        <!--</el-table-column>-->
+                        <!--<el-table-column-->
+                            <!--label="状态"-->
+                            <!--width="100">-->
+                            <!--<template scope=" scope">-->
+                                <!--<p style="width: 100%;height: 100%" @dblclick="selectId(scope.row.Id,scope.row.Name)">{{scope.row.Status}}</p>-->
+                            <!--</template>-->
+                        <!--</el-table-column>-->
+                        <!--<el-table-column-->
+                            <!--label="起始时间"  width="100">-->
+                            <!--<template scope=" scope">-->
+                                <!--<p style="width: 100%;height: 100%" :title=scope.row.Created @dblclick="selectId(scope.row.Id,scope.row.Name)">{{scope.row.Created}}</p>-->
+                            <!--</template>-->
+                        <!--</el-table-column>-->
+                        <!--<el-table-column-->
+                            <!--label="更新时间" width="100">-->
+                            <!--<template scope=" scope">-->
+                                <!--<p style="width: 100%;height: 100%" :title=scope.row.Updated @dblclick="selectId(scope.row.Id,scope.row.Name)">{{scope.row.Updated}}</p>-->
+                            <!--</template>-->
+                        <!--</el-table-column>-->
+                        <!--<el-table-column-->
+                            <!--label="书名起源"-->
+                            <!--width="180">-->
+                            <!--<template scope=" scope">-->
+                                <!--<p style="width: 100%;height: 100%" @dblclick="selectId(scope.row.Id,scope.row.Name)">{{scope.row.BookSourceName}}</p>-->
+                            <!--</template>-->
+                        <!--</el-table-column>-->
+                    <!--</el-table>-->
+                <!--</div>-->
+                <!--<div class="block booklistpag">-->
+                    <!--<el-pagination-->
+                        <!--@current-change="handleCurrentChangeBookList"-->
+                        <!--layout="total, prev, pager, next"-->
+                        <!--:total="BookLostRecordCount">-->
+                    <!--</el-pagination>-->
+                <!--</div>-->
+            <!--</div>-->
             <div class="trankingtypelist " v-if="showTrankingTypeList">
                 <div class="table_container">
                     <i @click="goBackTrank" class="el-icon-error goback"></i>
@@ -490,41 +525,18 @@
     import headTop from '../../components/headTop'
     export default {
         beforeMount() {
-            this.$store.dispatch('getModule', {payload:{sessionKey:localStorage.SessionKey,id:this.$route.params.Id}}).then(
-                (response) => {
-
-                }
-            ).catch(
-
-            )
-            this.$store.dispatch('getModuleTypeList', {payload:{page:{"PageIndex":"1","PageSize":"10"}}}).then(
-                (response) => {
-
-                }
-            ).catch(
-
-            )
-            this.$store.dispatch('getModuleClickTypeList', {payload:{page:{"PageIndex":"1","PageSize":"10"}}}).then(
-                (response) => {
-
-                }
-            ).catch(
-
-            )
-            this.$store.dispatch('getModuleDetailList', {page:{"PageIndex":"1","PageSize":"10"},params:{sessionKey:localStorage.SessionKey,bookStoreModuleid:this.$route.params.Id}}).then(
-                (response) => {
-
-                }
-            ).catch(
-
-            )
+            this.getModule(),
+                this.getModuleClickTypeList(),
+                this.getModuleDetailList()
         },
         components: {
             headTop,
         },
         data() {
             return {
+                StoreVersionName:'1',
                 labelPosition:'left',
+                date: '',
                 ImageToBookId:'',
                 showWebView:true,
                 nameOrAuthor:'',
@@ -540,9 +552,6 @@
                 flagImg: false,
                 moduleDetailBookName: '',
                 indexActive: '',
-                form: {
-                    name: ''
-                },
                 fileList: [],
                 url:'',
                 imgIndex:'',
@@ -550,21 +559,66 @@
                 uploadUrl: 'http://192.168.0.72:8022/api/commons/common/upload?sessionKey='+localStorage.SessionKey,
                 headers: {
                     'Access-Control-Allow-Origin': '*'
-                }
+                },
+                isPay:{isPay:'1'},
             }
         },
         created() {
+
         },
         methods: {
+            initDate() {
+                let that = this
+                console.log(that)
+                setTimeout(function(){
+                    let strTime1=that.list.BeginDate;
+                    let strTime2=that.list.EndDate;
+                    let BeginDate= new Date(Date.parse(strTime1.replace(/-/g,  "/")));
+                    let EndDate= new Date(Date.parse(strTime2.replace(/-/g,  "/")));
+                    that.date = [BeginDate,EndDate]
+                },100)
+            },
+            getModule() {
+                this.$store.dispatch('getModule', {payload:{sessionKey:localStorage.SessionKey,id:this.$route.params.Id,isPay:'1'}}).then(
+                    response => {
+                        console.log(111)
+                        this.initDate()
+                    }
+                )
+            },
+            getModuleClickTypeList() {
+                this.$store.dispatch('getModuleClickTypeList', {
+                    page:{"PageIndex":"1","PageSize":"10"},
+                    isPay:this.isPay
+                }).then(
+                    (response) => {
+
+                    }
+                ).catch(
+
+                )
+            },
+            getModuleDetailList() {
+                this.$store.dispatch('getModuleDetailList', {page:{"PageIndex":"1","PageSize":"10"},params:{sessionKey:localStorage.SessionKey,bookStoreModuleid:this.$route.params.Id,isPay:'1'}}).then(
+                    (response) => {
+
+                    }
+                ).catch(
+
+                )
+            },
             onSubmit() {
-                var payload = {
-                    Id: this.$route.params.Id,
+                var data = {
+                    Id: Number(this.$route.params.Id),
                     ModuleType: this.list.ModuleType,
                     Notice: this.$refs.Notice.value,
                     Title: this.$refs.Title.value,
                     IsHasFoot:this.list.IsHasFoot,
                     SerialNumber:this.$refs.SerialNumber.value,
-                    StoreVersion: this.$refs.StoreVersionName.value,
+                    StoreVersion: this.StoreVersionName,
+                    BeginDate:this.list.BeginDate,
+                    EndDate:this.list.EndDate,
+                    IsPreview:this.$refs.IsPreview.value,
                     FootName:this.$refs.FootName.value,
                     FootClickType:this.list.FootClickType,
                     FootOperationId: this.$refs.FootOperationId.value,
@@ -574,10 +628,12 @@
                     ImageToClickWebViewUrl: this.$refs.ImageWebView.value,
                     ImageToBookId: this.$refs.ImageToBookId.value,
                     ImageOperationId: this.$refs.ImageToOperationId.value,
-                    detail: this.tableData
+                    detail: this.getModuleDetailListTableData
                 }
-                var data = JSON.stringify(payload)
-                this.$store.dispatch('upDate', data).then(
+                this.$store.dispatch('upDate', {
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    data:data
+                }).then(
                     (response) => {
 
                     }
@@ -587,7 +643,8 @@
             },
             getBookList() {
                 this.$store.dispatch('getBookList', {
-                    page:{"PageIndex":"1","PageSize":"10"}
+                    page:{"PageIndex":"1","PageSize":"10"},
+                    isPay:this.isPay
                 }).then(
                     (response) => {
                     }
@@ -598,7 +655,9 @@
             getBookListSearch() {
                 var data = {
                     nameOrAuthor: this.nameOrAuthor,
-                    isOnshelf: this.isOnshelf
+                    isOnshelf: this.isOnshelf,
+                    isPay:'1'
+
                 }
                 this.$store.dispatch('getBookListSearch', {
                     page:{"PageIndex":"1","PageSize":"10"},
@@ -612,7 +671,8 @@
             },
             getTrankingTypeList() {
                 this.$store.dispatch('getTrankingTypeList', {
-                    page:{"PageIndex":"1","PageSize":"10"}
+                    page:{"PageIndex":"1","PageSize":"10"},
+                    isPay:this.isPay
                 }).then(
                     (response) => {
                     }
@@ -622,7 +682,8 @@
             },
             handleCurrentChangeTranking(val) {
                 this.$store.dispatch('getTrankingTypeList', {
-                    page:{"PageIndex":val,"PageSize":"10"}
+                    page:{"PageIndex":val,"PageSize":"10"},
+                    isPay:this.isPay
                     }).then(
                     (response) => {
                     }
@@ -633,7 +694,8 @@
             handleCurrentChangeBookList(val) {
                 var data = {
                     nameOrAuthor: this.nameOrAuthor,
-                    isOnshelf: this.isOnshelf
+                    isOnshelf: this.isOnshelf,
+                    isPay:this.isPay
                 }
                 this.$store.dispatch('getBookListSearch', {
                     page:{"PageIndex":val,"PageSize":"10"},
@@ -645,34 +707,10 @@
 
                 )
             },
-            getShortBookList() {
-                this.$store.dispatch('getShortBookList', {
-                    page:{"PageIndex":"1","PageSize":"10"}
-                }).then(
-                    (response) => {
-                    }
-                ).catch(
-
-                )
-            },
-            getShortBookListSearch() {
-                var data = {
-                    nameOrAuthor: this.shortNameOrAuthor,
-                    isOnshelf: this.shortIsOnshelf
-                }
-                this.$store.dispatch('getShortBookListSearch', {
-                    page:{"PageIndex":"1","PageSize":"10"},
-                    params:data
-                }).then(
-                    (response) => {
-                    }
-                ).catch(
-
-                )
-            },
             handleCurrentChangeShort(val) {
                 this.$store.dispatch('getShortBookList', {
-                    page:{"PageIndex":val,"PageSize":"10"}
+                    page:{"PageIndex":val,"PageSize":"10"},
+                    isPay:this.isPay
                 }).then(
                     (response) => {
                     }
@@ -682,7 +720,8 @@
             },
             getBookThemeList() {
                 this.$store.dispatch('getBookThemeList', {
-                    page:{"PageIndex":"1","PageSize":"10"}
+                    page:{"PageIndex":"1","PageSize":"10"},
+                    isPay:this.isPay
                 }).then(
                     (response) => {
                     }
@@ -692,7 +731,8 @@
             },
             handleCurrentChangeBookThemeList(val) {
                 this.$store.dispatch('getBookThemeList', {
-                    page:{"PageIndex":val,"PageSize":"10"}
+                    page:{"PageIndex":val,"PageSize":"10"},
+                    isPay:this.isPay
                 }).then(
                     (response) => {
                     }
@@ -709,12 +749,12 @@
                 }
             },
             changeImageClickType() {
+                this.$store.state.dataConfig.getModulelist.refresh = true
+                this.$store.state.dataConfig.getModule.flagImg = true
                 this.flagDetail = false
                 var value = this.$refs.ImageClickType.value
                 if(value === 22) {
-                    this.getBookList()
-                    this.flagImg = true
-                    this.showBookList = true
+                    this.$router.push(this.$route.query.redirect || '/bookList')
                 }
                 if(value === 23) {
                     this.getTrankingTypeList()
@@ -730,12 +770,12 @@
                 }
             },
             changeClickType(index,row) {
-                this.flagImg = false
+                this.$store.state.dataConfig.getModulelist.refresh = true
+                this.$store.state.dataConfig.getModule.flagImg = false
                 this.flagDetail = true
-                this.indexActive = index
+                this.$store.state.dataConfig.getModule.index = index
                 if(row.ClickTypeName === 22) {
-                    this.showBookList = true
-                    this.getBookList()
+                    this.$router.push(this.$route.query.redirect || '/bookList')
                 }
                 if(row.ClickTypeName === 23) {
                     this.getTrankingTypeList()
@@ -770,7 +810,7 @@
                 if (this.flagDetail) {
                     this.moduleDetailBookName = name
                     this.$nextTick(function () {
-                        this.tableData[this.indexActive].BookName =name
+                        this.getModuleDetailListTableData[this.indexActive].BookName =name
                     })
 
 
@@ -782,7 +822,7 @@
             handleRowHandleShort(row,event) {
                 this.showShortBookList = false
                 if (this.flagDetail) {
-                    this.tableData[this.indexActive].ShortBookName =row.Name
+                    this.getModuleDetailListTableData[this.indexActive].ShortBookName =row.Name
                 }
             },
             handleRemove(file, fileList) {
@@ -797,18 +837,18 @@
                     list.style.display = "none"
                 }
             },
-            hideList() {
-
-            },
             handlePreview(file) {
                 console.log(file);
             },
             handleSuccess(response,file,fileList) {
                 console.log(response)
-                this.tableData[this.imgIndex].IconUrl = response.dt[0].FileUrl
+                this.getModuleDetailListTableData[this.imgIndex].IconUrl = response.dt[0].FileUrl
             }
         },
         computed: {
+            Id: function() {
+              return this.$route.params.Id
+            },
             sessionKey: function() {
                 return  this.$store.state.dataConfig.getModulelist.sessionKey
             },
@@ -821,7 +861,7 @@
             ModuleClickTypeList: function() {
                 return  this.$store.state.dataConfig.getModuleClickTypeList.list
             },
-            tableData: function() {
+            getModuleDetailListTableData: function() {
                 return  this.$store.state.dataConfig.getModuleDetailList.list
             },
             bookList: function() {
@@ -853,35 +893,13 @@
             },
         },
         watch: {
-            '$route'(to,from) {
-                this.$store.dispatch('getModule', {payload:{sessionKey:localStorage.SessionKey,id:this.$route.params.Id}}).then(
-                    (response) => {
-
-                    }
-                ).catch(
-
-                )
-                this.$store.dispatch('getModuleTypeList', {payload:{page:{"PageIndex":"1","PageSize":"10"}}}).then(
-                    (response) => {
-
-                    }
-                ).catch(
-
-                )
-                this.$store.dispatch('getModuleClickTypeList', {payload:{page:{"PageIndex":"1","PageSize":"10"}}}).then(
-                    (response) => {
-
-                    }
-                ).catch(
-
-                )
-                this.$store.dispatch('getModuleDetailList', {page:{"PageIndex":"1","PageSize":"10"},params:{sessionKey:localStorage.SessionKey,bookStoreModuleid:this.$route.params.Id}}).then(
-                    (response) => {
-
-                    }
-                ).catch(
-
-                )
+            Id (val,oldval) {
+                var refreshed = this.$store.state.dataConfig.getModulelist.refresh
+                if(!refreshed){
+                        this.getModule(),
+                        this.getModuleClickTypeList(),
+                        this.getModuleDetailList()
+                }
             },
             sessionKey: function(val,odlVal) {
                 if (val === 2) {
@@ -889,7 +907,6 @@
                     this.$router.push(this.$route.query.redirect || '/')
                 }
             }
-
         }
     }
 </script>
@@ -913,7 +930,7 @@
     .el-table table{
         width: auto;
     }
-    .booklist,.trankingtypelist,.bookthemelist{
+    .trankingtypelist,.bookthemelist{
         position: fixed;
         top: 0;
         left: 0;

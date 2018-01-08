@@ -33,13 +33,17 @@ function requireAuth (to, from, next) {
 }
 const login = r => require.ensure([], () => r(require('@/page/login')), 'login');
 const manage = r => require.ensure([], () => r(require('@/page/manage')), 'manage');
-const bookList = r => require.ensure([], () => r(require('@/page/bookList')), 'bookList');
+
+const bookList = r => require.ensure([], () => r(require('@/page/bookList/bookList')), 'bookList');
 
 const bookStoreList = r => require.ensure([], () => r(require('@/page/bookStore/bookStoreList')), 'bookListStore');
 const getModule = r => require.ensure([], () => r(require('@/page/bookStore/getModule')), 'getModule');
 
 const pointInterest = r => require.ensure([], () => r(require('@/page/dialogicNovels/pointInterest')), 'pointInterest');
 const pointInterestIndex = r => require.ensure([], () => r(require('@/page/dialogicNovels/pointInterestIndex')), 'pointInterestIndex');
+const dialogNovel = r => require.ensure([], () => r(require('@/page/dialogicNovels/dialogNovel')), 'dialogNovel');
+
+const bookRank = r => require.ensure([], () => r(require('@/page/bookRank/getBookRank')), 'getBookRank');
 
 const routes = [
 	{
@@ -59,6 +63,10 @@ const routes = [
 			component: bookList,
 			meta: ['物料配置', '图书列表'],
 		},{
+            path: '/bookranking',
+            component: bookRank,
+            meta: ['物料配置', '排行榜'],
+        }, {
             path: '/bookStoreList',
             component: bookStoreList,
             meta: ['书城配置', '书城列表'],
@@ -76,6 +84,11 @@ const routes = [
                 path: '/pointInterestIndex',
                 component: pointInterestIndex,
                 meta: ['点趣首页配置'],
+            },
+            {
+                path: '/dialogNovel',
+                component: dialogNovel,
+                meta: ['对话小说栏'],
             }
 		]
 	}

@@ -8,11 +8,13 @@ const state = {
         list:[],
         PageCount:'',
         RecordCount:'',
-        sessionKey:''
+        sessionKey:'',
+        refresh:true
     },
     getModule: {
-      list:"",
-        sessionKey:''
+      list:'',
+      flagImg: true,
+      index: ''
     },
     getModuleTypeList: {
         list:''
@@ -29,7 +31,10 @@ const state = {
     getBookList: {
         list: '',
         PageCount: '',
-        RecordCount: ''
+        RecordCount: '',
+    },
+    getBookListIdSearch: {
+        list:''
     },
     getTrankingTypeList: {
         list:'',
@@ -51,13 +56,24 @@ const state = {
     },
     addModule: {
         status:''
+    },
+    upDateBook: {
+        status:''
+    },
+    deleteBook: {
+        status:''
+    },
+    getBookRanking: {
+        list:'',
+        PageCount:'',
+        RecordCount:''
     }
 }
 // actions
 const actions = {
     getModulelist ({commit},params) {
         commit(types.Get_Module_List_REQUEST)
-        dataConfig.getModulelistAPI(params.payload,
+        dataConfig.getModulelistAPI(params.page,params.params,
             (data) => commit(types.Get_Module_List_SUCCESS, data),
             (error) => commit(types.Get_Module_List_FAILURE, error)
         )
@@ -70,13 +86,13 @@ const actions = {
     },
     getModuleTypeList ({commit},params) {
         commit(types.Get_Module_Type_List_REQUEST)
-        dataConfig.getModuleTypeListAPI(params.payload,
+        dataConfig.getModuleTypeListAPI(params.page,params.isPay,
             (data) => commit(types.Get_Module_Type_List_SUCCESS, data)
         )
     },
     getModuleClickTypeList ({commit},params) {
         commit(types.Get_Module_Click_Type_List_REQUEST)
-        dataConfig.getModuleClickTypeListAPI(params.payload,
+        dataConfig.getModuleClickTypeListAPI(params.page,params.isPay,
             (data) => commit(types.Get_Module_Click_Type_List_SUCCESS, data)
         )
     },
@@ -94,7 +110,7 @@ const actions = {
     },
     getBookList ({commit},params) {
         commit(types.Get_Book_List_REQUEST)
-        dataConfig.getBookListAPI(params.page,
+        dataConfig.getBookListAPI(params.page,params.isPay,
             (data) => commit(types.Get_Book_List_SUCCESS, data)
         )
     },
@@ -104,9 +120,15 @@ const actions = {
             (data) => commit(types.Get_Book_List_Search_SUCCESS, data)
         )
     },
+    getBookListIdSearch ({commit},params) {
+        commit(types.Get_Book_List_Search_Id_REQUEST)
+        dataConfig.getBookListSearchIdAPI(params.page,params.params,
+            (data) => commit(types.Get_Book_List_Search_Id_SUCCESS, data)
+        )
+    },
     getTrankingTypeList ({commit},params) {
         commit(types.Get_Tranking_Type_List_REQUEST)
-        dataConfig.getTrankingTypeListAPI(params.page,
+        dataConfig.getTrankingTypeListAPI(params.page,params.isPay,
             (data) => commit(types.Get_Tranking_Type_List_SUCCESS, data)
         )
     },
@@ -124,7 +146,7 @@ const actions = {
     },
     getBookThemeList ({commit},params) {
         commit(types.Get_Book_Theme_List_REQUEST)
-        dataConfig.getBookThemeListAPI(params.page,
+        dataConfig.getBookThemeListAPI(params.page,params.isPay,
             (data) => commit(types.Get_Book_Theme_List_SUCCESS, data)
         )
     },
@@ -136,8 +158,26 @@ const actions = {
     },
     addModule ({commit},params) {
         commit(types.Add_Module_REQUEST)
-        dataConfig.addModuleAPI(params.data,
+        dataConfig.addModuleAPI(params,
             (data) => commit(types.Add_Module_SUCCESS, data)
+        )
+    },
+    upDateBook ({commit},params) {
+        commit(types.Up_Date_Book_REQUEST)
+        dataConfig.upDateBookAPI(params,
+            (data) => commit(types.Up_Date_Book_SUCCESS, data)
+        )
+    },
+    deleteBook ({commit},params) {
+        commit(types.Delete_Book_REQUEST)
+        dataConfig.deleteBookAPI(params.payload,
+            (data) => commit(types.Delete_Book_SUCCESS, data)
+        )
+    },
+    getBookRanking ({commit},params) {
+        commit(types.Get_Book_Ranking_REQUEST)
+        dataConfig.getBookRankingAPI(params.page,params.params,
+            (data) => commit(types.Get_Book_Ranking_SUCCESS, data)
         )
     },
 }
@@ -200,6 +240,12 @@ const mutations = {
         state.getBookList.PageCount = data.dt.PageCount
         state.getBookList.RecordCount = data.dt.RecordCount
     },
+    [types.Get_Book_List_Search_Id_REQUEST] (state) {
+
+    },
+    [types.Get_Book_List_Search_Id_SUCCESS] (state, data) {
+        state.getBookListIdSearch.list = data.dt
+    },
     [types.Get_Tranking_Type_List_REQUEST] (state) {
 
     },
@@ -243,6 +289,26 @@ const mutations = {
     },
     [types.Add_Module_SUCCESS] (state, data) {
         state.addModule.status = data.st
+    },
+    [types.Up_Date_Book_REQUEST] (state) {
+
+    },
+    [types.Up_Date_Book_SUCCESS] (state, data) {
+        state.upDateBook.status = data.st
+    },
+    [types.Delete_Book_REQUEST] (state) {
+
+    },
+    [types.Delete_Book_SUCCESS] (state, data) {
+        state.deleteBook.status = data.st
+    },
+    [types.Get_Book_Ranking_REQUEST] (state) {
+
+    },
+    [types.Get_Book_Ranking_SUCCESS] (state, data) {
+        state.getBookRanking.list = data.dt.PageData
+        state.getBookRanking.PageCount = data.dt.PageCount
+        state.getBookRanking.RecordCount = data.dt.RecordCount
     },
 }
 
