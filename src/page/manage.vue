@@ -8,14 +8,15 @@
 						<template slot="title"><i class="el-icon-document"></i>物料配置</template>
 						<el-menu-item index="bookList" @click="bookList">图书列表</el-menu-item>
                         <el-menu-item index="bookranking" @click="bookranking">排行榜</el-menu-item>
-						<el-menu-item index="shopList">书单列表</el-menu-item>
+						<el-menu-item index="bookThemeList" @click="bookThemeList">书单列表</el-menu-item>
 						<el-menu-item index="foodList">卡片类型</el-menu-item>
 						<el-menu-item index="orderList">列表管理</el-menu-item>
 						<el-menu-item index="adminList">跳样式管理</el-menu-item>
 					</el-submenu>
 					<el-submenu index="3">
 						<template slot="title"><i class="el-icon-plus"></i>书城配置</template>
-                        <el-menu-item index="bookStoreList" @click="winReload">书城列表</el-menu-item>
+                        <el-menu-item index="bookStore" @click="bookStore">书城列表</el-menu-item>
+                        <el-menu-item index="bookStoreList" @click="winReload">书城模块列表</el-menu-item>
 						<el-menu-item index="addShop">书卡列表</el-menu-item>
 						<el-menu-item index="addGoods">导航按钮</el-menu-item>
 					</el-submenu>
@@ -24,18 +25,21 @@
                         <el-menu-item index="bookranking" @click="bookranking">排行榜</el-menu-item>
 						<el-menu-item index="newMember">分类列表</el-menu-item>
 					</el-submenu>
-					<el-submenu index="5">
+                    <el-submenu index="5">
+                        <template slot="title"><i class="el-icon-setting"></i>用户系统</template>
+                        <el-menu-item  index="userConsumPtion" @click="userConsumPtion">用户消费记录</el-menu-item>
+                        <!--<el-menu-item  index="userBookConsumPtion" @click="userBookConsumPtion">书籍消费记录</el-menu-item>-->
+                        <!--<el-menu-item  index="userBookOrderConsumPtion" @click="userBookOrderConsumPtion">章节消费记录</el-menu-item>-->
+                        <el-menu-item  index="userReCharge" @click="userReCharge">用户充值记录</el-menu-item>
+                        <!--<el-menu-item  index="userRechargeDetail" @click="userRechargeDetail">用户单条充值明细</el-menu-item>-->
+                    </el-submenu>
+					<el-submenu index="6">
 						<template slot="title"><i class="el-icon-edit"></i>对话小说榜单配置</template>
                         <el-menu-item index="pointInterest" @click="pointInterest">点趣列表</el-menu-item>
                         <el-menu-item index="pointInterestIndex" @click="pointInterestIndex">点趣首页配置</el-menu-item>
                         <el-menu-item index="dialogNovel" @click="dialogNovel">对话小说列表</el-menu-item>
 						<el-menu-item index="vueEdit">分类列表</el-menu-item>
                         <el-menu-item index="vueEdit">列表管理</el-menu-item>
-					</el-submenu>
-					<el-submenu index="6">
-						<template slot="title"><i class="el-icon-setting"></i>运营活动配置</template>
-						<el-menu-item index="adminSet">应用内推送</el-menu-item>
-						<!-- <el-menu-item index="sendMessage">发送通知</el-menu-item> -->
 					</el-submenu>
 				</el-menu>
 			</el-col>
@@ -73,6 +77,27 @@
             },
             bookranking: function() {
                 this.$router.replace({ path: '/bookranking'})
+            },
+            bookStore: function() {
+                this.$router.replace({ path: '/bookStore'})
+            },
+            bookThemeList: function() {
+                this.$router.replace({ path: '/bookThemeList'})
+            },
+            userConsumPtion:function() {
+                this.$router.replace({ path: '/userConsumPtion'})
+            },
+            userBookConsumPtion: function() {
+                this.$router.replace({ path: '/userBookConsumPtion'})
+            },
+            userBookOrderConsumPtion: function() {
+                this.$router.replace({ path: '/userBookOrderConsumPtion'})
+            },
+            userReCharge: function() {
+                this.$router.replace({ path: '/userReCharge'})
+            },
+            userRechargeDetail: function() {
+                this.$router.replace({ path: '/userRechargeDetail'})
             }
         }
     }

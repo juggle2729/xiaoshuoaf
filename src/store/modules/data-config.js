@@ -9,12 +9,28 @@ const state = {
         PageCount:'',
         RecordCount:'',
         sessionKey:'',
-        refresh:true
+        refresh:true,
+        dialogFormVisibleModuleDetail:false,
+        dialogFormVisibleModuleAdd: false,
+        BookStoreVersion: '书城',
+        BookStoreVersion1: 1,
     },
     getModule: {
       list:'',
       flagImg: true,
-      index: ''
+      flagFoot:true,
+      flagDetail:true,
+      index: '',
+        listName:{
+            ImageToBookName:'',
+            FootToBookName:'',
+        },
+        listAdd:{
+            FootToBookNameAdd:'',
+            ImageToBookNameAdd:'',
+            FootOperationIdAdd:'',
+            ImageOperationIdAdd:''
+        }
     },
     getModuleTypeList: {
         list:''
@@ -23,7 +39,28 @@ const state = {
         list:''
     },
     getModuleDetailList: {
-        list:''
+        list:'',
+        index:'',
+        ClickTypeAdd1:[],
+        AddTableDataDetails:[
+            {
+                "IconUrl":'',
+                "Name":'',
+                "Summary":'',
+                "Author":'',
+                "Tag":'',
+                "Category":'',
+                "ClickType":'',
+                "BookId":'',
+                "BookName":'',
+                "OperationId":'',
+                "ClickWebViewUrl":'',
+                "SerialNumber":'',
+                "MinVer":'',
+                "OldPriceText":'',
+                "NewPriceText":''
+            }
+        ]
     },
     update: {
         list:''
@@ -32,15 +69,19 @@ const state = {
         list: '',
         PageCount: '',
         RecordCount: '',
+        bookRanked: false
+    },
+    getBookTypeList: {
+        list:''
     },
     getBookListIdSearch: {
         list:''
     },
-    getTrankingTypeList: {
-        list:'',
-        PageCount:'',
-        RecordCount:''
-    },
+    // getTrankingTypeList: {
+    //     list:'',
+    //     PageCount:'',
+    //     RecordCount:''
+    // },
     getShortBookList: {
         list:'',
         PageCount:'',
@@ -63,7 +104,75 @@ const state = {
     deleteBook: {
         status:''
     },
-    getBookRanking: {
+    getBookRankingList: {
+        list:'',
+        PageCount:'',
+        RecordCount:''
+    },
+    getBookRankingListId: {
+        list:'',
+        PageCount:'',
+        RecordCount:'',
+        index:'',
+        AddTableData:[
+            {
+                Author:"",
+                BookId:"",
+                Id:"",
+                Name:"",
+                SerialNumber:""
+            }
+        ]
+    },
+    deleteBookRanking: {
+        status:''
+    },
+    upDateBookRanking: {
+        status:''
+    },
+    addBookRanking: {
+        status:''
+    },
+    getBookStoreversionList: {
+        list:'',
+        PageCount:'',
+        RecordCount:''
+    },
+    upDateTab: {
+        status: ''
+    },
+    addTab: {
+        status: ''
+    },
+    deleteTab: {
+        status: ''
+    },
+    userConsumPtion: {
+        list:'',
+        PageCount:'',
+        RecordCount:'',
+        BeginDate:'',
+        EndDate:''
+    },
+    userBookConsumPtion: {
+        list:'',
+        PageCount:'',
+        RecordCount:'',
+        params:{}
+    },
+    userBookOrderConsumPtion: {
+        list:'',
+        PageCount:'',
+        RecordCount:'',
+        params:{}
+    },
+    userRecharge: {
+        list:'',
+        PageCount:'',
+        RecordCount:'',
+        params:{}
+    },
+    userRechargeDetail: {
         list:'',
         PageCount:'',
         RecordCount:''
@@ -86,7 +195,7 @@ const actions = {
     },
     getModuleTypeList ({commit},params) {
         commit(types.Get_Module_Type_List_REQUEST)
-        dataConfig.getModuleTypeListAPI(params.page,params.isPay,
+        dataConfig.getModuleTypeListAPI(params.page,
             (data) => commit(types.Get_Module_Type_List_SUCCESS, data)
         )
     },
@@ -112,6 +221,12 @@ const actions = {
         commit(types.Get_Book_List_REQUEST)
         dataConfig.getBookListAPI(params.page,params.isPay,
             (data) => commit(types.Get_Book_List_SUCCESS, data)
+        )
+    },
+    getBookTypeList ({commit},params) {
+        commit(types.Get_Book_Type_List_REQUEST)
+        dataConfig.getBookTypeListAPI(params.page,params.isPay,
+            (data) => commit(types.Get_Book_Type_List_SUCCESS, data)
         )
     },
     getBookListSearch ({commit},params) {
@@ -174,10 +289,88 @@ const actions = {
             (data) => commit(types.Delete_Book_SUCCESS, data)
         )
     },
-    getBookRanking ({commit},params) {
-        commit(types.Get_Book_Ranking_REQUEST)
-        dataConfig.getBookRankingAPI(params.page,params.params,
-            (data) => commit(types.Get_Book_Ranking_SUCCESS, data)
+    getBookRankingList ({commit},params) {
+        commit(types.Get_Book_Ranking_List_REQUEST)
+        dataConfig.getBookRankingListAPI(params.page,params.params,
+            (data) => commit(types.Get_Book_Ranking_List_SUCCESS, data)
+        )
+    },
+    getBookRankingListId ({commit},params) {
+        commit(types.Get_Book_Ranking_List_Id_REQUEST)
+        dataConfig.getBookRankingListIdAPI(params,
+            (data) => commit(types.Get_Book_Ranking_List_Id_SUCCESS, data)
+        )
+    },
+    deleteBookRanking ({commit},params) {
+        commit(types.Delete_Book_Ranking_REQUEST)
+        dataConfig.deleteBookRankingAPI(params.payload,
+            (data) => commit(types.Delete_Book_Ranking_SUCCESS, data)
+        )
+    },
+    upDateBookRanking ({commit},params) {
+        commit(types.Up_Date_Book_Ranking_REQUEST)
+        dataConfig.upDateBookRankingAPI(params,
+            (data) => commit(types.Up_Date_Book_Ranking_SUCCESS, data)
+        )
+    },
+    addBookRanking ({commit},params) {
+        commit(types.Add_Book_Ranking_REQUEST)
+        dataConfig.addBookRankingAPI(params,
+            (data) => commit(types.Add_Book_Ranking_SUCCESS, data)
+        )
+    },
+    getBookStoreversionList ({commit},params) {
+        commit(types.Get_Book_Storeversion_List_REQUEST)
+        dataConfig.getBookStoreversionListAPI(params,
+            (data) => commit(types.Get_Book_Storeversion_List_SUCCESS, data)
+        )
+    },
+    upDateTab ({commit},params) {
+        commit(types.Up_Date_Tab_REQUEST)
+        dataConfig.upDateTabAPI(params,
+            (data) => commit(types.Up_Date_Tab_SUCCESS, data)
+        )
+    },
+    addTab ({commit},params) {
+        commit(types.Add_Tab_REQUEST)
+        dataConfig.addTabAPI(params,
+            (data) => commit(types.Add_Tab_SUCCESS, data)
+        )
+    },
+    deleteTab ({commit},params) {
+        commit(types.Delete_Tab_REQUEST)
+        dataConfig.deleteTabAPI(params.payload,
+            (data) => commit(types.Delete_Tab_SUCCESS, data)
+        )
+    },
+    userConsumPtion ({commit},params) {
+        commit(types.User_Book_Comsum_Ption_REQUEST)
+        dataConfig.userConsumPtionAPI(params.page,params.params,
+            (data) => commit(types.User_Comsum_Ption_SUCCESS, data)
+        )
+    },
+    userBookConsumPtion ({commit},params) {
+        commit(types.User_Book_Comsum_Ption_REQUEST)
+        dataConfig.userBookConsumPtionAPI(params.page,params.params,
+            (data) => commit(types.User_Book_Comsum_Ption_SUCCESS, data)
+        )
+    },
+    userBookOrderConsumPtion ({commit},params) {
+        commit(types.User_Book_Order_Comsum_Ption_REQUEST)
+        dataConfig.userBookOrderConsumPtionAPI(params.page,params.params,
+            (data) => commit(types.User_Book_Order_Comsum_Ption_SUCCESS, data)
+        )
+    },
+    userRecharge ({commit},params) {
+        commit(types.User_Recharge_REQUEST)
+        dataConfig.userRechargeAPI(params.page,params.params,
+            (data) => commit(types.User_Recharge_SUCCESS, data)
+        )
+    },
+    userRechargeDetail ({commit},params) {
+        commit(types.User_Recharge_Detail_REQUEST)
+        dataConfig.userRechargeDetailAPI(params.page,params.params,
+            (data) => commit(types.User_Recharge_Detail_SUCCESS, data)
         )
     },
 }
@@ -232,6 +425,12 @@ const mutations = {
         state.getBookList.PageCount = data.dt.PageCount
         state.getBookList.RecordCount = data.dt.RecordCount
     },
+    [types.Get_Book_Type_List_REQUEST] (state) {
+
+    },
+    [types.Get_Book_Type_List_SUCCESS] (state, data) {
+        state.getBookTypeList.list = data.dt.PageData
+    },
     [types.Get_Book_List_Search_REQUEST] (state) {
 
     },
@@ -246,14 +445,14 @@ const mutations = {
     [types.Get_Book_List_Search_Id_SUCCESS] (state, data) {
         state.getBookListIdSearch.list = data.dt
     },
-    [types.Get_Tranking_Type_List_REQUEST] (state) {
-
-    },
-    [types.Get_Tranking_Type_List_SUCCESS] (state, data) {
-        state.getTrankingTypeList.list = data.dt.PageData
-        state.getTrankingTypeList.PageCount = data.dt.PageCount
-        state.getTrankingTypeList.RecordCount = data.dt.RecordCount
-    },
+    // [types.Get_Tranking_Type_List_REQUEST] (state) {
+    //
+    // },
+    // [types.Get_Tranking_Type_List_SUCCESS] (state, data) {
+    //     state.getTrankingTypeList.list = data.dt.PageData
+    //     state.getTrankingTypeList.PageCount = data.dt.PageCount
+    //     state.getTrankingTypeList.RecordCount = data.dt.RecordCount
+    // },
     [types.Get_Short_Book_List_REQUEST] (state) {
 
     },
@@ -302,13 +501,105 @@ const mutations = {
     [types.Delete_Book_SUCCESS] (state, data) {
         state.deleteBook.status = data.st
     },
-    [types.Get_Book_Ranking_REQUEST] (state) {
+    [types.Get_Book_Ranking_List_REQUEST] (state) {
 
     },
-    [types.Get_Book_Ranking_SUCCESS] (state, data) {
-        state.getBookRanking.list = data.dt.PageData
-        state.getBookRanking.PageCount = data.dt.PageCount
-        state.getBookRanking.RecordCount = data.dt.RecordCount
+    [types.Get_Book_Ranking_List_SUCCESS] (state, data) {
+        state.getBookRankingList.list = data.dt.PageData
+        state.getBookRankingList.PageCount = data.dt.PageCount
+        state.getBookRankingList.RecordCount = data.dt.RecordCount
+    },
+    [types.Get_Book_Ranking_List_Id_REQUEST] (state) {
+
+    },
+    [types.Get_Book_Ranking_List_Id_SUCCESS] (state, data) {
+        state.getBookRankingListId.list = data.dt.PageData
+        state.getBookRankingListId.PageCount = data.dt.PageCount
+        state.getBookRankingListId.RecordCount = data.dt.RecordCount
+    },
+    [types.Delete_Book_Ranking_REQUEST] (state) {
+
+    },
+    [types.Delete_Book_Ranking_SUCCESS] (state, data) {
+        state.deleteBookRanking.status = data.st
+    },
+    [types.Up_Date_Book_Ranking_REQUEST] (state) {
+
+    },
+    [types.Up_Date_Book_Ranking_SUCCESS] (state, data) {
+        state.upDateBookRanking.status = data.st
+    },
+    [types.Add_Book_Ranking_REQUEST] (state) {
+
+    },
+    [types.Add_Book_Ranking_SUCCESS] (state, data) {
+        state.addBookRanking.status = data.st
+    },
+    [types.Get_Book_Storeversion_List_REQUEST] (state) {
+
+    },
+    [types.Get_Book_Storeversion_List_SUCCESS] (state, data) {
+        state.getBookStoreversionList.list = data.dt.PageData
+        state.getBookStoreversionList.PageCount = data.dt.PageCount
+        state.getBookStoreversionList.RecordCount = data.dt.RecordCount
+    },
+    [types.Up_Date_Tab_REQUEST] (state) {
+
+    },
+    [types.Up_Date_Tab_SUCCESS] (state, data) {
+        state.upDateTab.status = data.st
+    },
+    [types.Add_Tab_REQUEST] (state) {
+
+    },
+    [types.Add_Tab_SUCCESS] (state, data) {
+        state.addTab.status = data.st
+    },
+    [types.Delete_Tab_REQUEST] (state) {
+
+    },
+    [types.Delete_Tab_SUCCESS] (state, data) {
+        state.deleteTab.status = data.st
+    },
+    [types.User_Comsum_Ption_REQUEST] (state) {
+
+    },
+    [types.User_Comsum_Ption_SUCCESS] (state, data) {
+        state.userConsumPtion.list = data.dt.PageData
+        state.userConsumPtion.PageCount = data.dt.PageCount
+        state.userConsumPtion.RecordCount = data.dt.RecordCount
+    },
+    [types.User_Book_Comsum_Ption_REQUEST] (state) {
+
+    },
+    [types.User_Book_Comsum_Ption_SUCCESS] (state, data) {
+        state.userBookConsumPtion.list = data.dt.PageData
+        state.userBookConsumPtion.PageCount = data.dt.PageCount
+        state.userBookConsumPtion.RecordCount = data.dt.RecordCount
+    },
+    [types.User_Book_Order_Comsum_Ption_REQUEST] (state) {
+
+    },
+    [types.User_Book_Order_Comsum_Ption_SUCCESS] (state, data) {
+        state.userBookOrderConsumPtion.list = data.dt.PageData
+        state.userBookOrderConsumPtion.PageCount = data.dt.PageCount
+        state.userBookOrderConsumPtion.RecordCount = data.dt.RecordCount
+    },
+    [types.User_Recharge_REQUEST] (state) {
+
+    },
+    [types.User_Recharge_SUCCESS] (state, data) {
+        state.userRecharge.list = data.dt.PageData
+        state.userRecharge.PageCount = data.dt.PageCount
+        state.userRecharge.RecordCount = data.dt.RecordCount
+    },
+    [types.User_Recharge_Detail_REQUEST] (state) {
+
+    },
+    [types.User_Recharge_Detail_SUCCESS] (state, data) {
+        state.userRechargeDetail.list = data.dt.PageData
+        state.userRechargeDetai.PageCount = data.dt.PageCount
+        state.userRechargeDetai.RecordCount = data.dt.RecordCount
     },
 }
 

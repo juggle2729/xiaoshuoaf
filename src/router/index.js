@@ -35,7 +35,9 @@ const login = r => require.ensure([], () => r(require('@/page/login')), 'login')
 const manage = r => require.ensure([], () => r(require('@/page/manage')), 'manage');
 
 const bookList = r => require.ensure([], () => r(require('@/page/bookList/bookList')), 'bookList');
+const bookThemeList = r => require.ensure([], () => r(require('@/page/bookThemeList/getBookThemeList')), 'bookThemeList');
 
+const bookStore = r => require.ensure([], () => r(require('@/page/bookStore/bookStore')), 'bookList');
 const bookStoreList = r => require.ensure([], () => r(require('@/page/bookStore/bookStoreList')), 'bookListStore');
 const getModule = r => require.ensure([], () => r(require('@/page/bookStore/getModule')), 'getModule');
 
@@ -44,6 +46,12 @@ const pointInterestIndex = r => require.ensure([], () => r(require('@/page/dialo
 const dialogNovel = r => require.ensure([], () => r(require('@/page/dialogicNovels/dialogNovel')), 'dialogNovel');
 
 const bookRank = r => require.ensure([], () => r(require('@/page/bookRank/getBookRank')), 'getBookRank');
+
+const userConsumPtion = r => require.ensure([], () => r(require('@/page/userConsum/userConsumPtion')), 'userConsumPtion');
+const userBookConsumPtion = r => require.ensure([], () => r(require('@/page/userConsum/userBookConsumPtion')), 'userBookConsumPtion');
+const userBookOrderConsumPtion = r => require.ensure([], () => r(require('@/page/userConsum/userBookOrderConsumPtion')), 'userBookOrderConsumPtion');
+const userReCharge = r => require.ensure([], () => r(require('@/page/userConsum/userReCharge')), 'userReCharge');
+const userRechargeDetail = r => require.ensure([], () => r(require('@/page/userConsum/userRechargeDetail')), 'userRechargeDetaile');
 
 const routes = [
 	{
@@ -63,17 +71,55 @@ const routes = [
 			component: bookList,
 			meta: ['物料配置', '图书列表'],
 		},{
+            path: '/bookThemeList',
+            component: bookThemeList,
+            meta: ['物料配置', '书单列表'],
+        },{
             path: '/bookranking',
             component: bookRank,
             meta: ['物料配置', '排行榜'],
+        },{
+            path: '/bookStore',
+            component: bookStore,
+            meta: ['书城配置', '书城列表'],
         }, {
             path: '/bookStoreList',
             component: bookStoreList,
-            meta: ['书城配置', '书城列表'],
+            meta: ['书城配置', '书城模块列表'],
         }, {
                 path: '/bookStoreList/getModule/:Id',
                 component: getModule,
                 meta: ['书城配置', '书城列表','模块属性'],
+            },
+            {
+                path: '/bookranking',
+                component: bookRank,
+                meta: ['图书榜单界面', '排行榜','榜单列表'],
+            },
+            {
+                path: '/userConsumPtion',
+                component: userConsumPtion,
+                meta: ['用户系统', '用户消费系统'],
+            },
+            {
+                path: '/userBookConsumPtion',
+                component: userBookConsumPtion,
+                meta: ['用户系统', '用户消费系统','书籍消费系统'],
+            },
+            {
+                path: '/userBookOrderConsumPtion',
+                component: userBookOrderConsumPtion,
+                meta: ['用户系统', '用户消费系统','书籍消费系统','章节消费情况'],
+            },
+            {
+                path: '/userReCharge',
+                component: userReCharge,
+                meta: ['用户系统', '用户充值记录'],
+            },
+            {
+                path: '/userRechargeDetail',
+                component: userRechargeDetail,
+                meta: ['用户系统','用户充值记录', '用户单条记录明细'],
             },
             {
                 path: '/pointInterest',
