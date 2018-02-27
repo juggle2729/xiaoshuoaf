@@ -34,7 +34,12 @@
                 </el-form-item>
                 <el-form-item label="渠道:">
                     <el-select v-model="filterForm.channel" ref="channel" placeholder="请选择" @change="channel" class="filter f4">
-                        <el-option label="ofw" value="ofw"></el-option>
+                        <el-option
+                            v-for="item in channelArr"
+                            :key="item.__RowNumber"
+                            :label="item.txt"
+                            :value="item.val" >
+                        </el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="时间:"  class="datePicker">
@@ -120,6 +125,7 @@
     import ElFormItem from "../../../node_modules/element-ui/packages/form/src/form-item";
     export default {
         beforeMount() {
+            this.getChannel()
         },
         data() {
             return {
@@ -130,10 +136,11 @@
                     givenCoinMin:'',
                     givenCoinMax:'',
                     channel:'',
-                    filterDate:''
+                    filterDate:'',
                 },
                 BeginDate:'',
-                EndDate:''
+                EndDate:'',
+                channelArr:[]
 
             }
         },
@@ -147,20 +154,39 @@
 
         },
         methods: {
+            formatDate(date) {
+                let y = date.getFullYear();
+                let m = date.getMonth() + 1;
+                m = m < 10 ? ('0' + m) : m;
+                let d = date.getDate();
+                d = d < 10 ? ('0' + d) : d;
+                let h = date.getHours();
+                h= h < 10 ? ('0' + h) : h;
+                let minute = date.getMinutes();
+                minute = minute < 10 ? ('0' + minute) : minute;
+                let s = date.getSeconds();
+                s = s < 10 ? ('0' + s) : s;
+                return y + '-' + m + '-' + d+' '+h+':'+minute+':'+s;
+            },
             initDate() {
-                let d = new Date(this.filterForm.filterDate[0])
-                let d1 = new Date(this.filterForm.filterDate[1])
-                this.BeginDate = d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate() + ' ' + d.getHours() + ':' + d.getMinutes() + ':' + d.getSeconds();
-                this.EndDate = d1.getFullYear() + '-' + (d1.getMonth() + 1) + '-' + d1.getDate() + ' ' + d1.getHours() + ':' + d1.getMinutes() + ':' + d1.getSeconds();
+                let d1 = new Date(this.filterForm.filterDate[0])
+                let d2 = new Date(this.filterForm.filterDate[1])
+                this.BeginDate = this.formatDate(d1)
+                this.EndDate = this.formatDate(d2)
                 this.$store.state.dataConfig.userConsumPtion.BeginDate = this.BeginDate
                 this.$store.state.dataConfig.userConsumPtion.EndDate = this.EndDate
             },
-
+            getChannel() {
+                this.$http.get('api/materiels/getchannel/1/10/?sessionKey='+localStorage.SessionKey+'&'+'isPay='+1).then(res=>{
+                    this.channelArr = res.body.dt.PageData
+                    console.log(res.body.dt.PageData)
+                })
+            },
             search(){
                 this.initDate()
                 let data = {
-//                    begin: this.BeginDate,
-//                    end: this.EndDate,
+                    begin: this.BeginDate,
+                    end: this.EndDate,
                     minRechargeCoin: this.filterForm.chargeCoinMin,
                     maxRechargeCoin: this.filterForm.chargeCoinMax,
                     minGivenCoin: this.filterForm.givenCoinMin,
@@ -200,8 +226,8 @@
                 console.log(row)
                 this.initDate()
                 let data = {
-//                    begin: this.BeginDate,
-//                    end: this.EndDate,
+                    begin: this.BeginDate,
+                    end: this.EndDate,
                     userId:row.UserId,
                     minRechargeCoin: this.filterForm.chargeCoinMin,
                     maxRechargeCoin: this.filterForm.chargeCoinMax,

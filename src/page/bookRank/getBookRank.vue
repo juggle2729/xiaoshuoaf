@@ -231,7 +231,7 @@
                 changeList:'',
                 id:'',
                 fileList: [],
-                uploadUrl: 'http://192.168.0.72:8022/api/commons/common/upload?sessionKey='+localStorage.SessionKey,
+                uploadUrl: 'http://47.52.25.158:9002/api/commons/common/upload?sessionKey='+localStorage.SessionKey,
             }
         },
         components: {

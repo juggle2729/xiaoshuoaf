@@ -211,7 +211,7 @@ export default {
             .then((response) => {
                 cb(response.data)
                 console.log(payload)
-            }, (error) => {
+            }, (error) => {npm
             })
     },
     deleteTabAPI (payload, cb, errorCb) {
@@ -256,6 +256,46 @@ export default {
     },
     userRechargeDetailAPI (page,params,cb) {
         return Vue.http.get('report/userrechargedetail/'+page.PageIndex+'/'+page.PageSize+'/?sessionKey='+localStorage.SessionKey,{params:params})
+            .then((response) => {
+                cb(response.data)
+            }, (error) => {
+
+            })
+    },
+    userRechargeOrderAPI (page,params,cb) {
+        return Vue.http.get('report/userrechargeorder/'+page.PageIndex+'/'+page.PageSize+'/?sessionKey='+localStorage.SessionKey,{params:params})
+            .then((response) => {
+                cb(response.data)
+            }, (error) => {
+
+            })
+    },
+    userInfoAPI (page,params,cb) {
+        return Vue.http.get('report/userinfo/'+page.PageIndex+'/'+page.PageSize+'/?sessionKey='+localStorage.SessionKey,{params:params})
+            .then((response) => {
+                cb(response.data)
+            }, (error) => {
+
+            })
+    },
+    userBookShelfAPI (page,params,cb) {
+        return Vue.http.get('report/userbookshelf/'+page.PageIndex+'/'+page.PageSize+'/?sessionKey='+localStorage.SessionKey,{params:params})
+            .then((response) => {
+                cb(response.data)
+            }, (error) => {
+
+            })
+    },
+    userTaskAPI (page,params,cb) {
+        return Vue.http.get('report/usertask/'+page.PageIndex+'/'+page.PageSize+'/?sessionKey='+localStorage.SessionKey,{params:params})
+            .then((response) => {
+                cb(response.data)
+            }, (error) => {
+
+            })
+    },
+    userFeedBackAPI (page,params,cb) {
+        return Vue.http.get('report/userfeedback/'+page.PageIndex+'/'+page.PageSize+'/?sessionKey='+localStorage.SessionKey,{params:params})
             .then((response) => {
                 cb(response.data)
             }, (error) => {

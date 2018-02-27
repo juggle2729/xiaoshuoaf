@@ -13,27 +13,27 @@
                 </el-table-column>
                 <el-table-column
                     prop="Code"
-                    label="Tab编码">
+                    label="Tab编码(不重复)">
                 </el-table-column>
                 <el-table-column
                     prop="Description"
                     label="描述">
                 </el-table-column>
                 <el-table-column
-                    prop="SerialNumber"
-                    label="序号">
-                </el-table-column>
-                <el-table-column
-                    prop="IsEnable"
-                    label="是否可用">
-                </el-table-column>
-                <el-table-column
                     prop="StoreVersion"
-                    label="配置书城Id编号">
+                    label="StoreVersion(Tab编号)">
+                </el-table-column>
+                <el-table-column
+                    prop="SerialNumber"
+                    label="顺序">
                 </el-table-column>
                 <el-table-column
                     prop="MinVer"
                     label="适用最小版本号">
+                </el-table-column>
+                <el-table-column
+                    prop="IsEnable"
+                    label="是否可用">
                 </el-table-column>
                 <el-table-column label="操作">
                     <template slot-scope="scope">
@@ -57,23 +57,8 @@
                     <el-form-item label="ID">
                         <el-input v-model="changeList.Id" ref="Id" style="width: 200px"></el-input>
                     </el-form-item>
-                    <el-form-item label="是否可用">
-                        <el-select placeholder="是否可用" v-model="changeList.IsEnable" ref="IsEnable">
-                            <el-option label="是" value="true"></el-option>
-                            <el-option label="否" value="false"></el-option>
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item label="Tab编号">
+                    <el-form-item label="Tab编码">
                         <el-input v-model="changeList.Code" ref="Code" style="width: 200px"></el-input>
-                    </el-form-item>
-                     <el-form-item label="描述">
-                         <el-input v-model="changeList.Description" ref="Description" style="width: 200px"></el-input>
-                      </el-form-item>
-                    <el-form-item label="序号">
-                        <el-input v-model="changeList.SerialNumber" ref="SerialNumber" style="width: 200px"></el-input>
-                    </el-form-item>
-                     <el-form-item label="配置书城Id编号">
-                        <el-input v-model="changeList.StoreVersion" ref="StoreVersion" style="width: 200px"></el-input>
                     </el-form-item>
                     <el-form-item label="Tab类型">
                         <el-select placeholder="Tab类型" v-model="TabType" ref="TabType">
@@ -82,30 +67,30 @@
                             <el-option label="书城内导航(男频、女频)" value="2"></el-option>
                         </el-select>
                     </el-form-item>
+                    <el-form-item label="描述">
+                        <el-input v-model="changeList.Description" ref="Description" style="width: 200px"></el-input>
+                    </el-form-item>
+                    <el-form-item label="StoreVersion(Tab编号)">
+                        <el-input v-model="changeList.StoreVersion" ref="StoreVersion" style="width: 200px"></el-input>
+                    </el-form-item>
+                    <el-form-item label="顺序">
+                        <el-input v-model="changeList.SerialNumber" ref="SerialNumber" style="width: 200px"></el-input>
+                    </el-form-item>
                     <el-form-item label="适用最小版本号">
                         <el-input v-model="changeList.MinVer" ref="MinVer" style="width: 200px"></el-input>
+                    </el-form-item>
+                    <el-form-item label="是否可用">
+                        <el-select placeholder="是否可用" v-model="changeList.IsEnable" ref="IsEnable">
+                            <el-option label="是" value="true"></el-option>
+                            <el-option label="否" value="false"></el-option>
+                        </el-select>
                     </el-form-item>
                 </el-form>
             </div>
             <div v-if="showTabAdd">
                 <el-form :model="form" label-width="130px" :label-position="labelPosition" style="padding-left:20px">
-                    <el-form-item label="Tab编号">
+                    <el-form-item label="Tab编码">
                         <el-input  v-model="StoreVersionAdd" ref="StoreVersionAdd" style="width: 200px"></el-input>
-                    </el-form-item>
-                    <el-form-item label="描述">
-                        <el-input  v-model="DescriptionAdd" ref="DescriptionAdd" style="width: 200px"></el-input>
-                    </el-form-item>
-                    <el-form-item label="序号">
-                        <el-input v-model="SerialNumberAdd" ref="SerialNumberAdd" style="width: 200px"></el-input>
-                    </el-form-item>
-                    <el-form-item label="配置书城Id编号">
-                        <el-input  v-model="CodeAdd" ref="CodeAdd" style="width: 200px"></el-input>
-                    </el-form-item>
-                    <el-form-item label="是否可用">
-                        <el-select   v-model="IsEnableAdd" placeholder="是否可用"  ref="IsEnableAdd">
-                            <el-option label="true" value="true"></el-option>
-                            <el-option label="false" value="false"></el-option>
-                        </el-select>
                     </el-form-item>
                     <el-form-item label="Tab类型">
                         <el-select placeholder="Tab类型"  v-model="TabTypeAdd" ref="TabTypeAdd">
@@ -114,8 +99,23 @@
                             <el-option label="书城内导航(男频、女频)" value="2"></el-option>
                         </el-select>
                     </el-form-item>
+                    <el-form-item label="描述">
+                        <el-input  v-model="DescriptionAdd" ref="DescriptionAdd" style="width: 200px"></el-input>
+                    </el-form-item>
+                    <el-form-item label="StoreVersion(Tab编号)">
+                        <el-input  v-model="CodeAdd" ref="CodeAdd" style="width: 200px"></el-input>
+                    </el-form-item>
+                    <el-form-item label="顺序">
+                        <el-input v-model="SerialNumberAdd" ref="SerialNumberAdd" style="width: 200px"></el-input>
+                    </el-form-item>
                     <el-form-item label="适用最小版本号">
                         <el-input  v-model="MinVerAdd" ref="MinVerAdd" style="width: 200px"></el-input>
+                    </el-form-item>
+                    <el-form-item label="是否可用">
+                        <el-select   v-model="IsEnableAdd" placeholder="是否可用"  ref="IsEnableAdd">
+                            <el-option label="是" value="true"></el-option>
+                            <el-option label="否" value="false"></el-option>
+                        </el-select>
                     </el-form-item>
                 </el-form>
             </div>

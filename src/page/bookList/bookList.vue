@@ -1,7 +1,7 @@
 <template>
     <div class="booklist  book">
         <head-top></head-top>
-        <el-input @keyup.enter.native="getBookListSearch" style="width: 200px;" class="filter-item" placeholder="名字或者作者" v-model="nameOrAuthor">
+        <el-input @keyup.enter.native="getBookListSearch" style="width: 200px;margin-left: 20px" class="filter-item" placeholder="名字或者作者" v-model="nameOrAuthor">
         </el-input>
         <el-input @keyup.enter.native="getBookListSearch" style="width: 200px;" class="filter-item" placeholder="状态" v-model="isOnshelf" >
         </el-input>
@@ -45,7 +45,7 @@
                 </el-table-column>
                 <el-table-column
                     label="封面">
-                    <template scope=" scope">
+                    <template slot-scope="scope">
                         <img :src="scope.row.FrontImageFilename" alt="" class="FrontImageFilename">
                     </template>
                 </el-table-column>
@@ -279,7 +279,7 @@
                 BookTypeId1:'',
                 changeBookTyped:false,
                 BookType1:'',
-                uploadUrl: 'http://192.168.0.72:8022/api/commons/common/upload?sessionKey='+localStorage.SessionKey,
+                uploadUrl: 'http://47.52.25.158:9002/api/commons/common/upload?sessionKey='+localStorage.SessionKey,
             }
         },
         created() {
@@ -610,7 +610,7 @@
     }
     .table_container{
         width: 100%;
-        padding: 10px;
+        padding: 20px;
         overflow-x: auto !important;
         .el-input{
             width: 200px;
@@ -629,7 +629,7 @@
         margin: 10px 0px;
     }
     .booklist .el-table{
-        width: 2300px;
+        width: 2400px;
         max-width: 200%;
     }
     .booklist .el-table__body-wrapper .cell{

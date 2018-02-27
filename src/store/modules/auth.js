@@ -4,9 +4,10 @@ import auth from '../../api/auth'
 // initial state
 const state = {
     SessionKey: null,
-  requestStatus: null,
-  loginStatus: false,
-  auth_error: null
+    requestStatus: null,
+    loginStatus: false,
+    auth_error: null,
+    UserId:''
 }
 
 // actions
@@ -38,9 +39,11 @@ const mutations = {
   [types.AUTHENTICATE_SUCCESS] (state, data) {
     state.SessionKey = data.dt.SessionKey
     state.loginStatus = true
-    state.requestStatus = 'stopped'
+    state.requestStatus = 'stopped',
+    state.UserId = data.dt.LoginUser.UserId,
     localStorage.SessionKey = data.dt.SessionKey
     localStorage.loginStatus = true
+      localStorage.UserId = data.dt.LoginUser.UserId
   },
   [types.AUTHENTICATE_FAILURE] (state, error) {
     state.loginStatus = false

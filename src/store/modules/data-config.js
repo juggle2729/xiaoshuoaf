@@ -12,7 +12,7 @@ const state = {
         refresh:true,
         dialogFormVisibleModuleDetail:false,
         dialogFormVisibleModuleAdd: false,
-        BookStoreVersion: '书城',
+        BookStoreVersion: '',
         BookStoreVersion1: 1,
     },
     getModule: {
@@ -176,6 +176,33 @@ const state = {
         list:'',
         PageCount:'',
         RecordCount:''
+    },
+    userRechargeOrder: {
+        list:'',
+        PageCount:'',
+        RecordCount:'',
+    },
+    userInfo: {
+        list:'',
+        PageCount:'',
+        RecordCount:'',
+    },
+    userBookShelf: {
+        list:'',
+        PageCount:'',
+        RecordCount:'',
+        params:{}
+    },
+    userTask: {
+        list:'',
+        PageCount:'',
+        RecordCount:'',
+        params:{}
+    },
+    userFeedBack: {
+        list:'',
+        PageCount:'',
+        RecordCount:'',
     }
 }
 // actions
@@ -371,6 +398,36 @@ const actions = {
         commit(types.User_Recharge_Detail_REQUEST)
         dataConfig.userRechargeDetailAPI(params.page,params.params,
             (data) => commit(types.User_Recharge_Detail_SUCCESS, data)
+        )
+    },
+    userRechargeOrder ({commit},params) {
+        commit(types.User_Recharge_Order_REQUEST)
+        dataConfig.userRechargeOrderAPI(params.page,params.params,
+            (data) => commit(types.User_Recharge_Order_SUCCESS, data)
+        )
+    },
+    userInfo ({commit},params) {
+        commit(types.User_Info_REQUEST)
+        dataConfig.userInfoAPI(params.page,params.params,
+            (data) => commit(types.User_Info_SUCCESS, data)
+        )
+    },
+    userBookShelf ({commit},params) {
+        commit(types.User_Book_Shelf_REQUEST)
+        dataConfig.userBookShelfAPI(params.page,params.params,
+            (data) => commit(types.User_Book_Shelf_SUCCESS, data)
+        )
+    },
+    userTask ({commit},params) {
+        commit(types.User_Task_REQUEST)
+        dataConfig.userTaskAPI(params.page,params.params,
+            (data) => commit(types.User_Task_SUCCESS, data)
+        )
+    },
+    userFeedBack ({commit},params) {
+        commit(types.User_Feed_Back_REQUEST)
+        dataConfig.userFeedBackAPI(params.page,params.params,
+            (data) => commit(types.User_Feed_Back_SUCCESS, data)
         )
     },
 }
@@ -600,6 +657,46 @@ const mutations = {
         state.userRechargeDetail.list = data.dt.PageData
         state.userRechargeDetai.PageCount = data.dt.PageCount
         state.userRechargeDetai.RecordCount = data.dt.RecordCount
+    },
+    [types.User_Recharge_Order_REQUEST] (state) {
+
+    },
+    [types.User_Recharge_Order_SUCCESS] (state, data) {
+        state.userRechargeOrder.list = data.dt.PageData
+        state.userRechargeOrder.PageCount = data.dt.PageCount
+        state.userRechargeOrder.RecordCount = data.dt.RecordCount
+    },
+    [types.User_Info_REQUEST] (state) {
+
+    },
+    [types.User_Info_SUCCESS] (state, data) {
+        state.userInfo.list = data.dt.PageData
+        state.userInfo.PageCount = data.dt.PageCount
+        state.userInfo.RecordCount = data.dt.RecordCount
+    },
+    [types.User_Book_Shelf_REQUEST] (state) {
+
+    },
+    [types.User_Book_Shelf_SUCCESS] (state, data) {
+        state.userBookShelf.list = data.dt.PageData
+        state.userBookShelf.PageCount = data.dt.PageCount
+        state.userBookShelf.RecordCount = data.dt.RecordCount
+    },
+    [types.User_Task_REQUEST] (state) {
+
+    },
+    [types.User_Task_SUCCESS] (state, data) {
+        state.userTask.list = data.dt.PageData
+        state.userTask.PageCount = data.dt.PageCount
+        state.userTask.RecordCount = data.dt.RecordCount
+    },
+    [types.User_Feed_Back_REQUEST] (state) {
+
+    },
+    [types.User_Feed_Back_SUCCESS] (state, data) {
+        state.userFeedBack.list = data.dt.PageData
+        state.userFeedBack.PageCount = data.dt.PageCount
+        state.userFeedBack.RecordCount = data.dt.RecordCount
     },
 }
 

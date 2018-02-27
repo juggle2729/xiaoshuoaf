@@ -2,41 +2,43 @@
     <el-form class="fillcontain">
         <head-top></head-top>
         <el-form class="table_container">
-            <el-form ref="form" :model="list" label-width="120px" :label-position="labelPosition" style="padding-left:20px" v-if="dialogFormVisibleDetail">
-                <el-form-item label="主题">
-                    <el-input v-model="list.Title" style="width:200px" ref="Title"></el-input>
-                </el-form-item>
-                <el-form-item label="通知">
-                    <el-input v-model="list.Notice" style="width:200px" ref="Notice"></el-input>
-                </el-form-item>
-                <el-form-item label="模块类型">
-                    <el-select v-model="list.ModuleDescription" placeholder="请选择模块类型" ref="ModuleType" >
-                        <el-option  v-for="item in ModuleTypeList" :key="item.Id" :label="item.ModuleDescription" :value="item.ModuleType"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="序号" >
-                    <el-input v-model="list.SerialNumber" style="width:200px" ref="SerialNumber"></el-input>
-                </el-form-item>
-                <el-form-item label="配置归属">
-                    <el-input v-model="StoreVersionAdd" style="width:200px" ref="StoreVersionAdd" :readonly="true"></el-input>
-                </el-form-item>
-                <el-form-item label="免费起止时间">
-                    <el-date-picker
-                        v-model="date"
-                        type="datetimerange"
-                        range-separator="至"
-                        start-placeholder="开始日期"
-                        end-placeholder="结束日期">
-                    </el-date-picker>
-                </el-form-item>
-                <el-form-item label="是否提前预览" >
-                    <el-select  v-model="list.IsPreview" ref="IsPreview">
-                        <el-option label="true" value="true"></el-option>
-                        <el-option label="false" value="false"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="尾标" >
-                    <div style="width: 60%;height:320px;border: 1px solid #e0e0e0;padding-top: 20px;padding-left: 20px">
+            <el-form ref="form" :model="list" label-width="100px" :label-position="labelPosition" style="padding-left:20px" v-if="dialogFormVisibleDetail">
+                <div class="topModule">
+                    <el-form-item label="主题">
+                        <el-input v-model="list.Title" style="width:200px" ref="Title"></el-input>
+                    </el-form-item>
+                    <el-form-item label="通知">
+                        <el-input v-model="list.Notice" style="width:200px" ref="Notice"></el-input>
+                    </el-form-item>
+                    <el-form-item label="模块类型">
+                        <el-select v-model="list.ModuleDescription" placeholder="请选择模块类型" ref="ModuleType" @change="changeModuleType" >
+                            <el-option  v-for="item in ModuleTypeList" :key="item.Id" :label="item.ModuleDescription" :value="item.ModuleType"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="序号" >
+                        <el-input v-model="list.SerialNumber" style="width:200px" ref="SerialNumber"></el-input>
+                    </el-form-item>
+                    <el-form-item label="配置归属">
+                        <el-input v-model="StoreVersionAdd" style="width:200px" ref="StoreVersionAdd" :readonly="true"></el-input>
+                    </el-form-item>
+                    <el-form-item label="是否提前预览" >
+                        <el-select  v-model="IsPreview" ref="IsPreview">
+                            <el-option label="是" value="true"></el-option>
+                            <el-option label="否" value="false"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="免费起止时间">
+                        <el-date-picker
+                            v-model="date"
+                            type="datetimerange"
+                            range-separator="至"
+                            start-placeholder="开始日期"
+                            end-placeholder="结束日期">
+                        </el-date-picker>
+                    </el-form-item>
+                </div>
+                <el-form-item label="尾标" class="font" style="width: 40%;float: left;margin-right: 10%">
+                    <div style="width: 100%;height:400px;border: 1px solid #e0e0e0;padding-top: 20px;padding-left: 20px">
                         <el-form-item label="脚标名称">
                             <el-input v-model="list.FootName" style="width:200px" ref="FootName"></el-input>
                         </el-form-item>
@@ -56,8 +58,8 @@
                         </el-form-item>
                     </div>
                 </el-form-item>
-                <el-form-item label="图片">
-                    <div style="width: 60%;height:400px;border: 1px solid #e0e0e0;padding-top: 20px;padding-left: 20px">
+                <el-form-item label="图片" class="image" style="width: 40%;float: left">
+                    <div style="width: 100%;height:400px;border: 1px solid #e0e0e0;padding-top: 20px;padding-left: 20px">
                         <!--<el-form-item label="图片ID" style="display:none">-->
                             <!--<el-select v-model="list.ImageId" placeholder="请选择图片ID">-->
                                 <!--<el-option label="区域一" value="shanghai"></el-option>-->
@@ -98,14 +100,13 @@
                         </el-form-item>
                     </div>
                 </el-form-item>
-                <div style="padding-bottom: 10px">
-                    内容列表
-                </div>
                 <div class="moduleDetail" >
+                    <div style="padding-bottom: 10px">
+                        内容列表
+                    </div>
                     <el-table
                         :data="getModuleDetailListTableData"
                         border
-                        stripe
                         highlight-current-row
                         max-width="100%">
                         <el-table-column
@@ -219,6 +220,11 @@
                                 <el-input v-model="scope.row.NewPriceText" style="width:100%" ref="moduleDetailNewPriceText"></el-input>
                             </template>
                         </el-table-column>
+                        <el-table-column label="操作" >
+                            <template slot-scope="scope">
+                                <el-button size="mini" type="info"  @click="handleAddDetail(scope.$index, scope.row)">新增</el-button>
+                            </template>
+                        </el-table-column>
                     </el-table>
                 </div>
                 <div class="submitButton">
@@ -226,42 +232,44 @@
                     <el-button>取消</el-button>
                 </div>
             </el-form>
-            <el-form ref="form"  :model="listAdd" label-width="120px" :label-position="labelPosition" style="padding-left:20px" v-if="dialogFormVisibleAdd">
-                    <el-form-item label="主题">
-                        <el-input v-model="TitleAdd" style="width:200px" ref="TitleAdd"></el-input>
-                    </el-form-item>
-                    <el-form-item label="通知">
-                        <el-input v-model="NoticeAdd" style="width:200px" ref="NoticeAdd"></el-input>
-                    </el-form-item>
-                    <el-form-item label="模块类型">
-                        <el-select v-model="ModuleTypeAdd" placeholder="请选择模块类型" ref="ModuleTypeAdd" >
-                            <el-option  v-for="item in ModuleTypeList" :key="item.Id" :label="item.ModuleDescription" :value="item.ModuleType"></el-option>
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item label="序号" >
-                        <el-input v-model="SerialNumberAdd" style="width:200px" ref="SerialNumberAdd"></el-input>
-                    </el-form-item>
-                    <el-form-item label="配置归属">
-                        <el-input v-model="StoreVersionAdd" style="width:200px" ref="StoreVersionAdd" :readonly="true"></el-input>
-                    </el-form-item>
-                <el-form-item label="免费起止时间"  class="datePicker">
-                    <el-date-picker
-                        v-model="dateAdd"
-                        type="datetimerange"
-                        size="large"
-                        range-separator="至"
-                        start-placeholder="开始日期"
-                        end-placeholder="结束日期">
-                    </el-date-picker>
-                </el-form-item>
-                    <el-form-item label="是否提前预览" >
-                        <el-select  v-model="IsPreviewAdd" ref="IsPreviewAdd">
-                            <el-option label="是" value="true"></el-option>
-                            <el-option label="否" value="false"></el-option>
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item label="尾标" >
-                        <div style="width: 60%;height:320px;border: 1px solid #e0e0e0;padding-top: 20px;padding-left: 20px">
+            <el-form ref="form"  :model="listAdd" label-width="100px" :label-position="labelPosition" style="padding-left:20px" v-if="dialogFormVisibleAdd">
+                    <div class="topModule">
+                        <el-form-item label="主题">
+                            <el-input v-model="TitleAdd" style="width:200px" ref="TitleAdd"></el-input>
+                        </el-form-item>
+                        <el-form-item label="通知">
+                            <el-input v-model="NoticeAdd" style="width:200px" ref="NoticeAdd"></el-input>
+                        </el-form-item>
+                        <el-form-item label="模块类型">
+                            <el-select v-model="ModuleTypeAdd" placeholder="请选择模块类型" ref="ModuleTypeAdd" >
+                                <el-option  v-for="item in ModuleTypeList" :key="item.Id" :label="item.ModuleDescription" :value="item.ModuleType"></el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="序号" >
+                            <el-input v-model="SerialNumberAdd" style="width:200px" ref="SerialNumberAdd"></el-input>
+                        </el-form-item>
+                        <el-form-item label="配置归属">
+                            <el-input v-model="StoreVersionAdd" style="width:200px" ref="StoreVersionAdd" :readonly="true"></el-input>
+                        </el-form-item>
+                        <el-form-item label="是否提前预览" >
+                            <el-select  v-model="IsPreviewAdd" ref="IsPreviewAdd">
+                                <el-option label="是" value="true"></el-option>
+                                <el-option label="否" value="false"></el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="免费起止时间"  class="datePicker">
+                            <el-date-picker
+                                v-model="dateAdd"
+                                type="datetimerange"
+                                size="large"
+                                range-separator="至"
+                                start-placeholder="开始日期"
+                                end-placeholder="结束日期">
+                            </el-date-picker>
+                        </el-form-item>
+                    </div>
+                    <el-form-item label="尾标" style="width: 40%;float: left;margin-right: 10%">
+                        <div style="width: 100%;height:400px;border: 1px solid #e0e0e0;padding-top: 20px;padding-left: 20px">
                             <el-form-item label="脚标名称">
                                 <el-input v-model="FootNameAdd" style="width:200px" ref="FootNameAdd"></el-input>
                             </el-form-item>
@@ -281,8 +289,8 @@
                             </el-form-item>
                         </div>
                     </el-form-item>
-                    <el-form-item label="图片">
-                        <div style="width: 60%;height:400px;border: 1px solid #e0e0e0;padding-top: 20px;padding-left: 20px">
+                    <el-form-item label="图片" style="width: 40%;float: left;margin-right: 10%">
+                        <div style="width: 100%;height:400px;border: 1px solid #e0e0e0;padding-top: 20px;padding-left: 20px">
                             <el-form-item label="图片" >
                                 <img  alt="" ref="ImageUrlAdd" style="width: 100px;height: 50px;">
                                 <from>
@@ -399,6 +407,7 @@
             this.showEdit(),
                 this.storeVersionAdd()
                 this.getModule(),
+                this.getModuleTypeList()
                 this.getModuleClickTypeList(),
                 this.getModuleDetailList()
         },
@@ -412,6 +421,9 @@
                 StoreVersionName:'1',
                 labelPosition:'left',
                 ModuleType:'',
+                ModuleType1:'',
+                IsPreview:'',
+                changeModuleTyped: false,
                 FootClickTypeName: '请选择点击类型',
                 FootClickType1:'',
                 FootToClickWebViewUrl:'',
@@ -454,7 +466,7 @@
                 url:'',
                 imgIndex:'',
                 rowIndex:'',
-                uploadUrl: 'http://192.168.0.72:8022/api/commons/common/upload?sessionKey='+localStorage.SessionKey,
+                uploadUrl: 'http://47.52.25.158:9002/api/commons/common/upload?sessionKey='+localStorage.SessionKey,
                 headers: {
                     'Access-Control-Allow-Origin': '*'
                 },
@@ -516,11 +528,29 @@
                 },100)
             },
             getModule() {
-                this.$store.dispatch('getModule', {payload:{sessionKey:localStorage.SessionKey,id:this.$route.params.Id,isPay:'1'}}).then(
-                    response => {
-                        this.initDate()
+                let that = this
+                this.$store.dispatch('getModule',
+                    {payload: {sessionKey:localStorage.SessionKey, id:this.$route.params.Id,isPay:'1'}})
+                    .then(response => {
+                        setTimeout(function(){
+                            that.initDate()
+                            let Previewed = that.list.IsPreview
+                            if(Previewed){
+                                that.IsPreview = "是"
+                            } else{
+                                that.IsPreview = "否"
+                            }
+                        },1000)
                     }
                 )
+            },
+            getModuleTypeList() {
+                this.$store.dispatch('getModuleTypeList', {
+                    page:{"PageIndex":"1","PageSize":"10"}
+                }).then(
+                    (response) => {
+                    }
+                ).catch()
             },
             getModuleClickTypeList() {
                 this.$store.dispatch('getModuleClickTypeList', {
@@ -554,9 +584,14 @@
                 } else{
                     this.ImageClickType1 = this.list.ImageClickType
                 }
+                if(this.changeModuleTyped) {
+                    this.ModuleType1 = this.$refs.ModuleType.value
+                } else{
+                    this.ModuleType1 = this.list.ModuleType
+                }
                 let data = {
                     Id: this.list.Id,
-                    ModuleType: this.list.ModuleType,
+                    ModuleType: this.ModuleType1,
                     Notice: this.list.Notice,
                     Title: this.list.Title,
                     IsHasFoot:this.list.IsHasFoot,
@@ -576,12 +611,17 @@
                     ImageToClickWebViewUrl: this.$refs.ImageToClickWebViewUrl.value,
                     detail: this.getModuleDetailListTableData
                 }
+                let that = this
                 this.$store.dispatch('upDate', {
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     data:data
                 }).then(
                     (response) => {
-
+                        this.$store.state.dataConfig.getModulelist.refresh = false
+                        this.$message.success('保存成功');
+                        setTimeout(function() {
+                            that.$router.push('/bookStoreList')
+                        },1000)
                     }
                 ).catch(
 
@@ -614,11 +654,17 @@
                     ImageOperationId: this.$refs.ImageOperationIdAdd.value,
                     detail: this.AddTableDataDetails
                 }
+                let that = this
                 this.$store.dispatch('addModule', {
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     data:data
                 }).then(
                     (response) => {
+                        this.$store.state.dataConfig.getModulelist.refresh = false
+                        this.$message.success('保存成功');
+                        setTimeout(function() {
+                            that.$router.push('/bookStoreList')
+                        },1000)
                     }
                 ).catch(
                 )
@@ -675,6 +721,9 @@
                 if(this.toStoreListed) {
                     this.$router.push(this.$route.query.redirect || '/bookStoreList')
                 }
+            },
+            changeModuleType(){
+                this.changeModuleTyped =true
             },
             changeFootClickType() {
                 this.$store.state.dataConfig.getModule.list.FootOperationId = ''
@@ -1079,10 +1128,6 @@
                     this.toThemeListed = false
                 }
             },
-            handleRemove(file, fileList) {
-                console.log(fileList)
-                console.log(file)
-            },
             changeImg(index,row) {
                 this.imgIndex = index;
                 this.rowIndex = row;
@@ -1090,9 +1135,6 @@
                 for (let list of lists) {
                     list.style.display = "none"
                 }
-            },
-            handlePreview(file) {
-                console.log(file);
             },
             handleSuccess(response,file,fileList) {
                 console.log(response)
@@ -1115,7 +1157,30 @@
                 console.log(response)
                 this.AddTableDataDetails[this.imgAddIndex].IconUrl = response.dt[0].FileUrl
             },
-
+            handleAddDetail() {
+                let length = this.getModuleDetailListTableData.length
+                let item = {
+                    __RowNumber: length+1,
+                    ClickTypeName:"",
+                    NewPriceText:'',
+                    IconUrl:'',
+                    Name:"",
+                    MinVer:'',
+                    Author:"",
+                    ClickWebViewUrl:'',
+                    Category:"",
+                    ClickType:'',
+                    Id:'',
+                    BookId:'',
+                    BookName:"'",
+                    OldPriceText:'',
+                    OperationId:'',
+                    SerialNumber:'',
+                    Summary:'',
+                    Tag:""
+                }
+                this.getModuleDetailListTableData.push(item)
+            },
             addtr() {
                 var tableItem = {
                     "IconUrl":'',
@@ -1241,6 +1306,19 @@
             position: relative;
         }
     }
+    .topModule{
+        height: 300px;
+        .el-form-item{
+            width: 33.33%;
+            float: left;
+        }
+    }
+    .font .el-form-item{
+        width: 80%;
+    }
+    .image .el-form-item{
+        width: 80%;
+    }
     .el-form-item__content{
         margin-bottom: 20px;
     }
@@ -1255,19 +1333,6 @@
     }
     .el-table table{
         width: auto;
-    }
-    .shortbooklist{
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0,0,0,.7);
-        overflow: auto;
-        z-index: 111111;
-        .filter-item{
-            margin-left: 20px;
-        }
     }
     .booklistpag{
         margin: 10px 0px;
@@ -1304,7 +1369,7 @@
         width: 100%;
         overflow-x: scroll;
         .el-table{
-            width: 1800px;
+            width: 2000px;
             max-width: 200%;
             .el-table__body-wrapper{
                 overflow: hidden;

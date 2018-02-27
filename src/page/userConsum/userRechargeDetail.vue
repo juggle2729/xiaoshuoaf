@@ -45,11 +45,6 @@
                     prop="DealDate"
                     label="充值时间">
                 </el-table-column>
-                <el-table-column label="操作">
-                    <template slot-scope="scope">
-                        <el-button size="mini" type="info"  @click="handleMore(scope.$index, scope.row)">查看更多</el-button>
-                    </template>
-                </el-table-column>
             </el-table>
         </div>
         <div class="block" style="margin-left: 10px">

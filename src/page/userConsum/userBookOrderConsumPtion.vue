@@ -26,11 +26,6 @@
                     prop="CreatedDate"
                     label="付费时间" width="200">
                 </el-table-column>
-                <el-table-column label="操作">
-                    <template slot-scope="scope">
-                        <el-button size="mini" type="info" >查看更多</el-button>
-                    </template>
-                </el-table-column>
             </el-table>
         </div>
         <div class="block" style="margin-left: 10px">
@@ -65,6 +60,7 @@
         },
         methods: {
             handleCurrentChange(val) {
+                let data = this.$store.state.dataConfig.userBookOrderConsumPtion.params
                 this.$store.dispatch('userBookOrderConsumPtion', {
                     page:{"PageIndex":val,"PageSize":"10"},
                     params:data

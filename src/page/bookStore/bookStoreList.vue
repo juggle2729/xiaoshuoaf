@@ -22,8 +22,7 @@
                 @row-dblclick="handleRowHandle"
                 style="width:100%" >
                 <el-table-column
-                    label="Id"
-                    width="80">
+                    label="Id">
                     <template scope="scope">
                         <p>{{scope.row.Id}}</p>
                     </template>
@@ -31,52 +30,54 @@
                 <el-table-column
                     prop="ModuleType"
                     label="模块类别"
-                    width="80">
+                    width="100">
                 </el-table-column>
                 <el-table-column
-                    label="模块详细描述"
-                    width="120">
+                    label="模块描述"
+                    width="160">
                     <template scope="scope">
                         <p :title="scope.row.ModuleDescription">{{scope.row.ModuleDescription}}</p>
                     </template>
                 </el-table-column>
                 <el-table-column
+                    label="模块名称">
+                    <template scope="scope">
+                        <p :title="scope.row.Title">{{scope.row.Title}}</p>
+                    </template>
+                </el-table-column>
+                <el-table-column
                     prop="StoreVersionName"
-                    label="模块配置归属名称"
+                    label="模块归属"
                     width="100">
                 </el-table-column>
                 <el-table-column
-                    prop="StoreVersion"
-                    label="版本号"
-                    width="80">
-                </el-table-column>
-                <el-table-column
                     prop="SerialNumber"
-                    label="序号"
+                    label="顺序"
                     width="80">
                 </el-table-column>
                 <el-table-column
-                    label="免费开始时间">
+                    label="模块开始时间">
                     <template scope="scope">
                         <p :title="scope.row.BeginDate">{{scope.row.BeginDate}}</p>
                     </template>
                 </el-table-column>
                 <el-table-column
-                    label="免费结束时间">
+                    label="模块结束时间">
                     <template scope="scope">
                         <p :title="scope.row.EndDate">{{scope.row.EndDate}}</p>
                     </template>
+                </el-table-column>
+                <el-table-column
+                    prop="StoreVersion"
+                    label="适用最小版本号"
+                    width="100">
                 </el-table-column>
                 <el-table-column
                     prop="IsPreview"
                     label="是否提前预览"
                     width="80">
                 </el-table-column>
-                <el-table-column
-                    prop="Title"
-                    label="模块标题">
-                </el-table-column>
-                <el-table-column label="操作">
+                <el-table-column label="操作" width="180">
                     <template slot-scope="scope">
                         <el-button size="mini" type="primary" @click="toGetModule(scope.$index,scope.row)">编辑</el-button>
                         <el-button size="mini" @click="handleAdd(scope.$index, scope.row)">新增</el-button>
@@ -185,14 +186,11 @@
     export default {
         beforeMount() {
             this.getBookStoreversionList()
-            this.getModuleList()
-            this.getModuleTypeList(),
-                this.getModuleClickTypeList()
         },
         data() {
             return {
                 dialogFormVisible:false,
-                BookStoreVersion0:'书城',
+                BookStoreVersion0:'',
                 ModuleType: '',
                 Notice: '',
                 Title: '',
@@ -225,7 +223,7 @@
                 MinVer: '',
                 isPay:{isPay:'1'},
 
-                uploadUrl: 'http://192.168.0.72:8022/api/commons/common/upload?sessionKey='+localStorage.SessionKey,
+                uploadUrl: 'http://47.52.25.158:9002/api/commons/common/upload?sessionKey='+localStorage.SessionKey,
             }
         },
         components: {
@@ -238,8 +236,17 @@
         },
         methods: {
             getBookStoreversionList() {
+                let that = this
                 this.$store.dispatch('getBookStoreversionList', {
                     page: {"PageIndex": "1", "PageSize": "100"}
+                }).then(res=>{
+                    setTimeout(function(){
+                        that.BookStoreVersion0 = that.listSvr[0].Description
+                        let StoreVersion = that.listSvr[0].StoreVersion
+                        that.$store.state.dataConfig.getModulelist.BookStoreVersion = that.listSvr[0].Description
+                        that.$store.state.dataConfig.getModulelist.BookStoreVersion1 = that.listSvr[0].StoreVersion
+                        that.getModuleList(StoreVersion)
+                    },1)
                 })
             },
             toGetModule: function(index,row) {
@@ -250,18 +257,14 @@
                 this.$store.state.dataConfig.getModule.listName.ImageToBookName = ''
                 this.$router.push('bookStoreList/getModule/'+row.Id)
             },
-            getModuleList: function() {
-                let that = this
+            getModuleList: function(storeVersion) {
                 this.$store.dispatch('getModulelist', {
                     page:{"PageIndex":"1","PageSize":"10"},
                     params:{
-                        storeVersion: 1
+                        storeVersion: storeVersion
                     }
-                }).then(
-                    (response) => {
-                    }
-                ).catch(
-                )
+                })
+
             },
             changeBookStoreVersion(value) {
                 let obj = {};
@@ -282,28 +285,12 @@
                 ).catch(
                 )
             },
-            getModuleTypeList() {
-                this.$store.dispatch('getModuleTypeList', {
-                    page:{"PageIndex":"1","PageSize":"10"}
-                }).then(
-                    (response) => {
-                    }
-                ).catch()
-            },
-            getModuleClickTypeList: function() {
-                this.$store.dispatch('getModuleClickTypeList', {
-                    page:{"PageIndex":"1","PageSize":"10"},
-                    isPay:this.isPay
-                }).then(
-                    (response) => {
-                    }
-                )
-            },
             handleCurrentChange(val) {
+                let that = this
                 this.$store.dispatch('getModulelist', {
                     page:{"PageIndex":val,"PageSize":"10"},
                     params:{
-                        storeVersion: 1
+                        storeVersion: that.$store.state.dataConfig.getModulelist.BookStoreVersion1
                     }
                 }).then(
                     (response) => {
@@ -351,9 +338,6 @@
             },
             onSubmit() {
 
-            },
-            back() {
-                this.dialogFormVisible = false
             },
             handleDelete(index, row) {
                 this.$confirm('此操作将删除该信息, 是否继续?', '提示', {
@@ -449,15 +433,6 @@
             list: function() {
                 return  this.$store.state.dataConfig.getModule.list
             },
-            ModuleTypeList: function() {
-                return  this.$store.state.dataConfig.getModuleTypeList.list
-            },
-            ModuleTypeList: function() {
-                return  this.$store.state.dataConfig.getModuleTypeList.list
-            },
-            ModuleClickTypeList: function() {
-                return  this.$store.state.dataConfig.getModuleClickTypeList.list
-            },
             tableData: function() {
                 var tableData1 = this.$store.state.dataConfig.getModulelist.list
                 if(tableData1.length === 0){
@@ -487,9 +462,6 @@
             deleteSt: function() {
                 return  this.$store.state.dataConfig.delete.status
             },
-            ModuleClickTypeList: function() {
-                return  this.$store.state.dataConfig.getModuleClickTypeList.list
-            },
             BookStoreversionList: function() {
                 return  this.$store.state.dataConfig.getBookStoreversionList.list
             },
@@ -505,11 +477,18 @@
                     listStr.push(item)
                 }
                 return listStr
+            },
+            refresh: function() {
+                return  this.$store.state.dataConfig.getModulelist.refresh
             }
         },
         watch: {
             '$route'(to,from) {
-
+                let refreshed = this.$store.state.dataConfig.getModulelist.refresh
+                if(!refreshed){
+                    this.getBookStoreversionList()
+                    this.getModuleList()
+                }
             },
             sessionKey: function(val,odlVal) {
                 if (val === 2) {

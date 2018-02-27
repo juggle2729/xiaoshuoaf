@@ -12,11 +12,15 @@
                     width="100">
                 </el-table-column>
                 <el-table-column
+                    prop="Nickname"
+                    label="昵称">
+                </el-table-column>
+                <el-table-column
                     prop="Name"
                     label="用户名">
                 </el-table-column>
                 <el-table-column
-                    prop="Nickname"
+                    prop="BookName"
                     label="付费书名">
                 </el-table-column>
                 <el-table-column
@@ -91,9 +95,9 @@
             handleOrder(index,row){
                 let data = {
                     userId:row.UserId,
-                    bookId:9797,
-//                    begin: this.$store.state.dataConfig.userConsumPtion.BeginDate,
-//                    end: this.$store.state.dataConfig.userConsumPtion.EndDate
+                    bookId:row.BookId,
+                    begin: this.$store.state.dataConfig.userConsumPtion.BeginDate,
+                    end: this.$store.state.dataConfig.userConsumPtion.EndDate
                 }
                 this.$store.state.dataConfig.userBookOrderConsumPtion.params = data
                 this.$store.dispatch('userBookOrderConsumPtion', {

@@ -105,3 +105,18 @@ export const User_Recharge_SUCCESS = ' User_Recharge_SUCCESS'
 
 export const User_Recharge_Detail_REQUEST = ' User_Recharge_Detail_REQUEST'
 export const User_Recharge_Detail_SUCCESS = ' User_Recharge_Detail_SUCCESS'
+
+export const User_Recharge_Order_REQUEST = ' User_Recharge_Order_REQUEST'
+export const User_Recharge_Order_SUCCESS = ' User_Recharge_Order_SUCCESS'
+
+export const User_Info_REQUEST = ' User_Info_REQUEST'
+export const User_Info_SUCCESS = ' User_Info_SUCCESS'
+
+export const User_Book_Shelf_REQUEST = ' User_Book_Shelf_REQUEST'
+export const User_Book_Shelf_SUCCESS = ' User_Book_Shelf_SUCCESS'
+
+export const User_Task_REQUEST = ' User_Task_REQUEST'
+export const User_Task_SUCCESS = ' User_Task_SUCCESS'
+
+export const User_Feed_Back_REQUEST = ' User_Feed_Back_REQUEST'
+export const User_Feed_Back_SUCCESS = ' User_Feed_Back_SUCCESS'

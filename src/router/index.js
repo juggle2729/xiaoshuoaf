@@ -8,6 +8,7 @@ function isAuthenticated () {
     if (store.state.auth && store.state.auth.loginStatus && store.state.auth.SessionKey) {
         localStorage.loginStatus = true
         localStorage.SessionKey = store.state.auth.SessionKey
+        localStorage.UserId = store.state.auth.UserId
         return true
     }
     if (localStorage.loginStatus && localStorage.SessionKey) {
@@ -52,6 +53,11 @@ const userBookConsumPtion = r => require.ensure([], () => r(require('@/page/user
 const userBookOrderConsumPtion = r => require.ensure([], () => r(require('@/page/userConsum/userBookOrderConsumPtion')), 'userBookOrderConsumPtion');
 const userReCharge = r => require.ensure([], () => r(require('@/page/userConsum/userReCharge')), 'userReCharge');
 const userRechargeDetail = r => require.ensure([], () => r(require('@/page/userConsum/userRechargeDetail')), 'userRechargeDetaile');
+const userRechargeOrder = r => require.ensure([], () => r(require('@/page/userConsum/userRechargeOrder')), 'userRechargeOrder');
+const userInfo = r => require.ensure([], () => r(require('@/page/userConsum/userInfo')), 'userInfo');
+const userBookShelf = r => require.ensure([], () => r(require('@/page/userConsum/userBookShelf')), 'userBookShelf');
+const userTask = r => require.ensure([], () => r(require('@/page/userConsum/userTask')), 'userTask');
+const userFeedBack = r => require.ensure([], () => r(require('@/page/userConsum/userFeedBack')), 'userFeedBack');
 
 const routes = [
 	{
@@ -120,6 +126,31 @@ const routes = [
                 path: '/userRechargeDetail',
                 component: userRechargeDetail,
                 meta: ['用户系统','用户充值记录', '用户单条记录明细'],
+            },
+            {
+                path: '/userRechargeOrder',
+                component: userRechargeOrder,
+                meta: ['用户系统', '用户实时充值记录'],
+            },
+            {
+                path: '/userInfo',
+                component: userInfo,
+                meta: ['用户系统', '用户信息'],
+            },
+            {
+                path: '/userBookShelf',
+                component: userBookShelf,
+                meta: ['用户系统', '用户信息', '用户书架'],
+            },
+            {
+                path: '/userTask',
+                component: userTask,
+                meta: ['用户系统', '用户信息', '用户已完成任务'],
+            },
+            {
+                path: '/userFeedBack',
+                component: userFeedBack,
+                meta: ['用户系统', '用户反馈'],
             },
             {
                 path: '/pointInterest',
