@@ -28,6 +28,11 @@
                     label="交易订单ID" width="200">
                 </el-table-column>
                 <el-table-column
+                    prop="UserId"
+                    label="用户ID"
+                    width="100">
+                </el-table-column>
+                <el-table-column
                     prop="UserName"
                     label="用户名"
                     width="100">

@@ -10,7 +10,7 @@
         <!--</div>-->
         <div class="userFilter">
             <el-form ref="filterForm" :inline="true">
-                <el-select v-model="filterForm.orderBy" ref="orderBy" placeholder="请选择顺序" @change="orderBy" class="filter f1">
+                <el-select v-model="filterForm.orderBy" ref="orderBy" clearable placeholder="请选择顺序" @change="orderBy" class="filter f1">
                     <el-option label="年龄从小到大" value="Age"></el-option>
                     <el-option label="年龄从大到小" value="Age DESC"></el-option>
                     <el-option label="用户ID从小到大" value="UserId"></el-option>
@@ -33,7 +33,7 @@
                     <el-input  v-model="filterForm.givenCoinMax" style="width: 80px"></el-input>
                 </el-form-item>
                 <el-form-item label="渠道:">
-                    <el-select v-model="filterForm.channel" ref="channel" placeholder="请选择" @change="channel" class="filter f4">
+                    <el-select v-model="filterForm.channel" ref="channel" clearable placeholder="请选择" @change="channel" class="filter f4">
                         <el-option
                             v-for="item in channelArr"
                             :key="item.__RowNumber"
@@ -51,6 +51,9 @@
                         start-placeholder="开始日期"
                         end-placeholder="结束日期">
                     </el-date-picker>
+                </el-form-item>
+                <el-form-item label="用户ID:" class="filter f5">
+                    <el-input  v-model="filterForm.userId" style="width: 80px"></el-input>
                 </el-form-item>
                 <el-form-item>
                     <el-button class="filter-item" type="primary" v-waves icon="search" @click="search">搜索</el-button>
@@ -137,6 +140,7 @@
                     givenCoinMax:'',
                     channel:'',
                     filterDate:'',
+                    userId:''
                 },
                 BeginDate:'',
                 EndDate:'',
@@ -192,7 +196,8 @@
                     minGivenCoin: this.filterForm.givenCoinMin,
                     maxGivenCoin: this.filterForm.givenCoinMax,
                     orderBy: this.$refs.orderBy.value,
-                    channel: this.$refs.channel.value
+                    channel: this.$refs.channel.value,
+                    userId: this.filterForm.userId
                 }
                 console.log(data)
                 this.$store.dispatch('userConsumPtion', {
@@ -214,7 +219,10 @@
                     minRechargeCoin: this.filterForm.chargeCoinMin,
                     maxRechargeCoin: this.filterForm.chargeCoinMax,
                     minGivenCoin: this.filterForm.givenCoinMin,
-                    maxGivenCoin: this.filterForm.givenCoinMax
+                    maxGivenCoin: this.filterForm.givenCoinMax,
+                    orderBy: this.$refs.orderBy.value,
+                    channel: this.$refs.channel.value,
+                    userId: this.filterForm.userId
                 }
                 console.log(data)
                 this.$store.dispatch('userConsumPtion', {
@@ -283,6 +291,9 @@
             }
             .f4{
                 width: 100px;
+            }
+            .f5{
+                width: 150px;
             }
         }
         .filterSearch{

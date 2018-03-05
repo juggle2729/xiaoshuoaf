@@ -3,7 +3,7 @@
         <head-top></head-top>
         <div class="userFilter">
             <el-form ref="filterForm" :inline="true">
-                <el-select v-model="filterForm.orderBy" ref="orderBy" placeholder="请选择排序方式" @change="orderBySearch" class="filter f1">
+                <el-select v-model="filterForm.orderBy" ref="orderBy" clearable placeholder="请选择排序方式" @change="orderBySearch" class="filter f1">
                     <el-option label="总充值金额从小到大" value="TotalPayAmount"></el-option>
                     <el-option label="总充值金额从大到小" value="TotalPayAmount DESC"></el-option>
                     <el-option label="充值次数从小到大" value="RechargeCount"></el-option>
@@ -38,7 +38,7 @@
                     <el-input  v-model="filterForm.maxVipDays" style="width: 80px"></el-input>
                 </el-form-item>
                 <el-form-item label="渠道:">
-                    <el-select v-model="filterForm.channel" ref="channel" placeholder="请选择渠道" @change="channel" class="filter f4">
+                    <el-select v-model="filterForm.channel" ref="channel" clearable placeholder="请选择渠道" @change="channel" class="filter f4">
                         <el-option
                             v-for="item in channelArr"
                             :key="item.__RowNumber"

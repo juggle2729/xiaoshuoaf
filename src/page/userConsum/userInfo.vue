@@ -3,7 +3,7 @@
         <head-top></head-top>
         <div class="userFilter">
             <el-form ref="filterForm" :inline="true">
-                <el-select v-model="filterForm.orderBy" ref="orderBy" placeholder="请选择排序方式" @change="orderBySearch" class="filter f1">
+                <el-select v-model="filterForm.orderBy" ref="orderBy" clearable placeholder="请选择排序方式" @change="orderBySearch" class="filter f1">
                     <el-option label="年龄从小到大" value="Age"></el-option>
                     <el-option label="年龄从大到小" value="Age DESC"></el-option>
                     <el-option label="用户ID从小到大" value="UserId"></el-option>
@@ -40,7 +40,7 @@
                     <el-input  v-model="filterForm.NickName" style="width: 80px"></el-input>
                 </el-form-item>
                 <el-form-item label="渠道:">
-                    <el-select v-model="filterForm.channel" ref="channel" placeholder="请选择渠道" @change="channel" class="filter f4">
+                    <el-select v-model="filterForm.channel" ref="channel" clearable placeholder="请选择渠道" @change="channel" class="filter f4">
                         <el-option
                             v-for="item in channelArr"
                             :key="item.__RowNumber"
